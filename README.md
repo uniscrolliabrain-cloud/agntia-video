@@ -123,7 +123,7 @@ python -m pip install -e '.[dev]'
 python -m pytest -q
 ```
 
-FFmpeg/ffprobe se requieren para las pruebas de integración. Las APIs de pago se prueban con respuestas controladas, sin gastar créditos. Para pruebas de navegador: `python -m playwright install chromium` y `python tests/browser_smoke.py`. El test conecta el navegador a la aplicación mediante rutas de Playwright: no necesita arrancar un servidor ni abrir puertos. Puedes usar un navegador existente con `AGNTIA_BROWSER_EXECUTABLE`. En GitHub Actions se ejecutan las pruebas y se guardan capturas de escritorio y móvil como artefactos.
+FFmpeg/ffprobe se requieren para las pruebas de integración. Las APIs de pago se prueban con respuestas controladas, sin gastar créditos. Para pruebas de navegador: `python -m playwright install chromium` y `python tests/browser_smoke.py`. El test arranca y detiene su propio servidor HTTP en un puerto local y usa datos temporales; no necesitas arrancar el estudio manualmente. Puedes usar un navegador existente con `AGNTIA_BROWSER_EXECUTABLE`. En GitHub Actions se ejecutan las pruebas y se guardan capturas de escritorio y móvil como artefactos.
 
 ## Referencias
 
