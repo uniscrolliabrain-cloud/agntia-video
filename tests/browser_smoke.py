@@ -51,7 +51,7 @@ def main():
             page.locator("#add-segment").click()
             page.locator("#voice-mode").select_option("ai")
             page.locator("#music-asset").select_option(index=1)
-            page.locator("#music-volume").fill("20")
+            page.locator("#music-volume").evaluate("el => { el.value = '20'; el.dispatchEvent(new Event('input', {bubbles:true})); }")
             page.locator("#save-button").click()
             page.wait_for_function("document.querySelector('#save-state').textContent === 'Guardado'")
             page.locator("#detect-beats").click()
