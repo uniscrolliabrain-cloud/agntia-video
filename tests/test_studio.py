@@ -12,7 +12,7 @@ from fastapi.testclient import TestClient
 
 from agntia import jobs, media, providers, storage
 from agntia.app import app
-from agntia.models import Plan, Segment, slice_plan, validate_plan
+from agntia.models import Caption, Plan, Segment, slice_plan, validate_plan
 
 
 class StudioTests(unittest.TestCase):
@@ -166,6 +166,46 @@ class StudioTests(unittest.TestCase):
         cues = media.timeline_cues(p, plan)
         self.assertEqual(cues, [{"start": 0, "end": 2, "text": "Bonjour"}])
         self.assertIn("00:00:00,000 --> 00:00:02,000", media.srt(cues))
+
+    def test_manual_caption_overrides_and_clip_rebasing(self):
+        p = {"assets": [{"id": "voice", "duration": 10, "has_audio": True, "name": "voice", "analysis": {"transcript": [{"start": 0, "end": 10, "text": "Original"}]}}]}
+        plan = Plan(segments=[Segment(asset_id="voice", start=0, end=10)], captions=[Caption(start=2, end=5, text="Texto corregido")])
+        self.assertEqual(media.timeline_cues(p, plan), [{"start": 2, "end": 5, "text": "Texto corregido"}])
+        clipped = slice_plan(plan, 3, 7)
+        self.assertEqual(media.timeline_cues(p, clipped), [{"start": 0, "end": 2, "text": "Texto corregido"}])
+        self.assertEqual(media.timeline_cues(p, Plan(segments=plan.segments, captions=[])), [])
+        with self.assertRaises(ValueError):
+            validate_plan(Plan(segments=plan.segments, captions=[Caption(start=9, end=12, text="Fuera")]), p["assets"])
+
+    def test_manual_caption_can_be_saved_and_rendered_without_provider_keys(self):
+        audio = self.upload(self.audio)
+        p = storage.read(self.pid)
+        p["settings"]["subtitles"] = "original"
+        storage.write(p)
+        plan = {"segments": [{"asset_id": audio["id"], "start": 0, "end": 1}], "clips": [], "captions": [{"start": .1, "end": .9, "text": "Bonjour, texto corregido"}]}
+        saved = self.save(plan)
+        self.assertEqual(saved.status_code, 200, saved.text)
+        self.assertEqual(saved.json()["plan"]["captions"][0]["text"], "Bonjour, texto corregido")
+        response = self.client.post(self.base+"/render", json={"mode": "preview"})
+        job = self.wait(response.json()["id"])
+        self.assertIn("Bonjour, texto corregido", self.client.get(job["outputs"][0]["srt"]).text)
+        # Explicitly removing all captions must not reintroduce the transcript or break export.
+        plan["captions"] = []
+        self.assertEqual(self.save(plan).status_code, 200)
+        response = self.client.post(self.base+"/render", json={"mode": "preview"})
+        self.assertIsNone(self.wait(response.json()["id"])["outputs"][0]["srt"])
+
+    def test_real_video_and_audio_thumbnails_are_cached_and_protected(self):
+        for path in (self.video, self.audio):
+            a = self.upload(path)
+            url = self.base+f"/assets/{a['id']}/thumbnail"
+            response = self.client.get(url)
+            self.assertEqual(response.status_code, 200, response.text[:100] if response.status_code!=200 else "")
+            self.assertEqual(response.content[:8], b"\x89PNG\r\n\x1a\n")
+            with patch.object(media, "run", side_effect=AssertionError("thumbnail should be cached")):
+                self.assertEqual(self.client.get(url).status_code, 200)
+            with patch.dict(os.environ, {"AGNTIA_ACCESS_TOKEN": "secret"}):
+                self.assertEqual(self.client.get(url).status_code, 401)
 
     def test_render_video_with_external_audio_and_vertical_clip(self):
         video, audio = self.upload(self.video), self.upload(self.audio)

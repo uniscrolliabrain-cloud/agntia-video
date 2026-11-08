@@ -12,7 +12,7 @@ Dentro de tu otro repositorio:
 pnpm add github:uniscrolliabrain-cloud/agntia-video#main
 ```
 
-El nombre de importación es `@agntia/video`. Este paquete **no está publicado en npm**: se instala desde GitHub, y `prepare` genera los módulos JavaScript. Fija un commit en lugar de `main` para una instalación reproducible. Si tu política de pnpm no ejecuta la preparación de dependencias Git, puedes instalar un `.tgz` ya compilado desde los artefactos del workflow **Test → agntia-typescript-package**, o construirlo desde un checkout con `pnpm install && pnpm build && pnpm pack`. Después: `pnpm add ./agntia-video-0.3.0.tgz`.
+El nombre de importación es `@agntia/video`. Este paquete **no está publicado en npm**: se instala desde GitHub, y `prepare` genera los módulos JavaScript. Fija un commit en lugar de `main` para una instalación reproducible. Si tu política de pnpm no ejecuta la preparación de dependencias Git, puedes instalar un `.tgz` ya compilado desde los artefactos del workflow **Test → agntia-typescript-package**, o construirlo desde un checkout con `pnpm install && pnpm build && pnpm pack`. Después: `pnpm add ./agntia-video-0.4.0.tgz`.
 
 Arranca el motor según el README. Configura en su `.env` un `AGNTIA_ACCESS_TOKEN` largo para acceso remoto y usa ese mismo valor solo en el servidor Hono. El paquete pnpm no instala Python ni FFmpeg automáticamente.
 

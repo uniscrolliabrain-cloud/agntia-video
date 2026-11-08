@@ -15,7 +15,8 @@ export interface Segment {
   asset_id: string; start: number; end: number; audio_id?: string | null; audio_start?: number | null; note?: string;
 }
 export interface Clip { title: string; start: number; end: number }
-export interface Plan { segments: Segment[]; clips: Clip[] }
+export interface Caption { start: number; end: number; text: string }
+export interface Plan { segments: Segment[]; clips: Clip[]; captions?: Caption[] | null }
 export interface TranscriptItem { start: number; end: number; text: string }
 export interface Analysis { summary: string; transcript: TranscriptItem[]; highlights: TranscriptItem[]; model?: string }
 export interface Beats { times: number[]; bpm: number | null; duration?: number; regularity?: number; notice?: string }

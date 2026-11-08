@@ -53,3 +53,11 @@ Antes de incorporar código, modelos o binarios de cualquiera de ellos, revisar 
 ## Próximas ampliaciones posibles
 
 Sincronización automática por forma de onda; mezcla de varias voces; alineación local con WhisperX; cortes de silencio con márgenes; encuadres que sigan al hablante; importación/exportación OpenTimelineIO; subidas reanudables; almacenamiento S3 y autenticación por usuario. No forman parte de la versión actual.
+
+## Editor visual (0.4)
+
+Biblioteca, lienzo, inspector y línea de tiempo SVG se apoyan en el mismo plan que usa la API. La vista identifica originales y renders anteriores para distinguir inspección de material de un montaje con efectos aplicados. La selección no cambia el plan. Recortar/dividir/duplicar/reordenar sí lo cambia; los inicios del audio separado se ajustan al dividir y recortar. Los cambios temporales desplazan anotaciones posteriores; al reordenar, el usuario revisa los subtítulos manuales sobre la salida.
+
+El historial del navegador guarda solo plan, settings y briefing (hasta 70 pasos); nunca restaura una revisión antigua del servidor ni elimina archivos subidos. Un guardado conserva las referencias de los controles activos y no descarta ediciones realizadas durante la solicitud. Las miniaturas son PNG generados con FFmpeg y cacheados por archivo, con la misma autenticación que los originales.
+
+`plan.captions` añade subtítulos manuales compatibles con los clientes: `null` conserva el comportamiento anterior, `[]` suprime texto y una lista sustituye la transcripción. Los tiempos se validan contra el montaje y se recortan/desplazan al generar clips. El modelo y el SDK aceptan el campo de forma opcional para preservar proyectos anteriores.

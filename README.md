@@ -2,7 +2,7 @@
 
 Un estudio de podcast en tu navegador: importa cámara, avatares, audios y B-roll; conversa sobre el briefing; revisa el montaje y exporta el episodio y sus clips verticales.
 
-**Versión 0.3 (MVP), para Windows y servidores Linux.** Funciona sin claves para cargar archivos, editar cortes, previsualizar y exportar. DeepSeek y Gemini son opcionales y se configuran después. No incluye claves ni créditos. Incluye un pequeño modelo RNNoise para limpiar voz localmente, sin API.
+**Versión 0.4 (MVP), para Windows y servidores Linux.** Funciona sin claves para cargar archivos, editar cortes, previsualizar y exportar. DeepSeek y Gemini son opcionales y se configuran después. No incluye claves ni créditos. Incluye un pequeño modelo RNNoise para limpiar voz localmente, sin API.
 
 ## Integrarlo con tus agentes y Hono
 
@@ -24,6 +24,18 @@ Consulta la [instalación para TypeScript, Hono y agentes](docs/typescript-agent
 - Añadir música MP3/WAV/M4A, ajustar volumen e inicio, repetirla y bajar su nivel automáticamente cuando habla alguien.
 - Detectar golpes musicales, visualizar marcadores y acercar las transiciones existentes a beats cercanos, con margen elegible y opción de deshacer.
 - Descargar el plan de edición en JSON. Los originales se conservan; cada render crea archivos nuevos.
+
+## Editar el resultado desde el estudio
+
+La interfaz tiene biblioteca lateral, lienzo central, inspector del corte y línea de tiempo visual. Los proyectos y las operaciones siguen siendo los mismos para personas y agentes.
+
+1. **Archivos**: sube o arrastra material. Pulsa ＋ en una tarjeta o arrástrala a la línea de tiempo para añadirla al montaje. Las miniaturas se generan a partir del material real.
+2. **Montaje**: selecciona un bloque para editar inicio, final, imagen y audio en el inspector. Arrastra los bordes para recortar y el cuerpo para reordenar. Divide con **S**, duplica o elimina desde la barra. **Ctrl/Cmd+Z**, **Ctrl/Cmd+Shift+Z** y **Ctrl/Cmd+S** permiten deshacer, rehacer y guardar. Los recortes desplazan los clips/subtítulos manuales posteriores para mantenerlos dentro del montaje.
+3. **Subtítulos**: carga la transcripción disponible o añade texto manual. Corrige texto e intervalos sobre la línea de salida. Los cambios se guardan en `plan.captions` y también están disponibles para los agentes. `null` usa la transcripción automática; una lista vacía suprime los subtítulos. Al reordenar cortes, revisa los subtítulos manuales: sus tiempos se refieren al resultado.
+4. **Sonido** y **Clips**: ajusta voz/música/beats o crea los momentos verticales. **Agente IA** permite seguir dando indicaciones sin bloquear los retoques manuales.
+5. **Generar previsualización** aplica el montaje y sus efectos. Ver un original solo sirve para inspeccionar ese archivo; el lienzo lo identifica. Si retocas una entrega ya generada, aparece **Vista anterior** hasta volver a previsualizar. **Exportar vídeo** guarda el plan y genera las entregas en 1080p.
+
+El estudio detecta actualizaciones del servidor y carga los cambios del agente cuando no hay retoques locales sin guardar. Si hay cambios en ambos lados, conserva tus retoques y el guardado devuelve conflicto para conciliarlos; no sobrescribe automáticamente otra versión. El historial de deshacer/rehacer es local a la sesión y al proyecto, y conserva hasta 70 pasos.
 
 ## Arranque en Windows
 
@@ -119,7 +131,7 @@ docs/              Arquitectura, decisiones y referencias
 - El B-roll sustituye la imagen de un corte mientras mantiene el audio elegido; no hay capas visuales, transiciones, doblaje ni generación de avatares. Sí admite una pista musical mezclada con el diálogo.
 - Los tiempos de Gemini son aproximados a nivel de frase. Revisa la transcripción, los recortes y los subtítulos. No hay alineación fonética ni subtítulos karaoke. Si recortas parte de una frase, su texto sigue siendo el de la frase original: ajusta el corte al límite de frase para evitar inconsistencias.
 - La elección de momentos depende del análisis y del briefing. Sin análisis, el agente debe explicarlo y no atribuir calidad al material que no ha visto. Los planes de IA se validan antes de guardarse; el agente modifica el plan, pero nunca renderiza sin pulsar un botón.
-- Encuadre fijo (imagen completa o centro), sin seguimiento de caras. Las previsualizaciones se renderizan a baja resolución; no es un editor de arrastrar clips sobre una pista gráfica en tiempo real.
+- Encuadre fijo (imagen completa o centro), sin seguimiento de caras. La línea de tiempo edita el plan visualmente. Las previsualizaciones se renderizan a baja resolución; los efectos de voz, subtítulos y mezcla se aplican al volver a generar la vista, no en tiempo real mientras arrastras.
 - Diseñado para un único servidor y propietario. No hay cuentas multiusuario, cuotas por usuario, reanudación de subidas, facturación ni almacenamiento S3 incluido.
 
 ## Desarrollo y pruebas

@@ -16,7 +16,7 @@ from pydantic import Field
 from . import audio, jobs, media, providers, storage
 from .models import Plan, Settings, StrictModel, slice_plan, validate_plan, validate_settings
 
-app = FastAPI(title="Agntia-video", version="0.3.0")
+app = FastAPI(title="Agntia-video", version="0.4.0")
 STATIC = Path(__file__).parent / "static"
 
 
@@ -251,6 +251,15 @@ def source_media(pid: str, aid: str):
     return FileResponse(storage.asset_path(pid, a))
 
 
+@app.get("/api/projects/{pid}/assets/{aid}/thumbnail")
+def source_thumbnail(pid: str, aid: str):
+    p = storage.read(pid)
+    a = next((a for a in p["assets"] if a["id"] == aid), None)
+    if not a:
+        raise HTTPException(404, "Archivo no encontrado")
+    return FileResponse(media.thumbnail(p, a), media_type="image/png")
+
+
 @app.post("/api/projects/{pid}/analyze")
 def analyze(pid: str):
     p = storage.read(pid)
@@ -374,9 +383,9 @@ def render(pid: str, data: RenderRequest):
             language = p["settings"]["subtitles"]
             if language != "off":
                 cues = media.timeline_cues(p, variant)
-                if not cues:
+                if not cues and variant.captions != []:
                     raise ValueError("No hay transcripción para subtitular. Analiza los audios o selecciona sin subtítulos.")
-                if language != "original":
+                if cues and language != "original":
                     cues = providers.translate(cues, language)
             target = directory / f"{label}.mp4"
             media.render(p, variant, target, vertical=vertical, preview=data.mode == "preview", cues=cues, timeline_start=timeline_start)

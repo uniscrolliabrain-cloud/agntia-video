@@ -26,7 +26,8 @@ const plan: Schema = object({
     audio_start: { type: ['number', 'null'], minimum: 0 }, note: { type: 'string', maxLength: 1000 },
   }, ['asset_id', 'start', 'end']) },
   clips: { type: 'array', maxItems: 30, items: object({ title: str(120), start: number(), end: number() }) },
-});
+  captions: { type: ['array', 'null'], maxItems: 3000, items: object({ start: number(), end: number(), text: str(2000) }) },
+}, ['segments', 'clips']);
 const settings: Schema = object({
   source_language: choice('auto', 'es', 'en', 'fr'), subtitles: choice('off', 'original', 'es', 'en', 'fr'), fit: choice('contain', 'crop'),
   voice_enhancement: choice('off', 'studio', 'ai'), voice_strength: number(0, 1),

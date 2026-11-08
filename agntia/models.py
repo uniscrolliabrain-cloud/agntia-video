@@ -59,9 +59,22 @@ class Clip(StrictModel):
     end: float = Field(gt=0)
 
 
+class Caption(StrictModel):
+    start: float = Field(ge=0)
+    end: float = Field(gt=0)
+    text: str = Field(min_length=1, max_length=2000)
+
+    @model_validator(mode="after")
+    def ordered(self):
+        if self.end <= self.start:
+            raise ValueError("El subtítulo debe terminar después de empezar")
+        return self
+
+
 class Plan(StrictModel):
     segments: list[Segment] = Field(default_factory=list, max_length=500)
     clips: list[Clip] = Field(default_factory=list, max_length=30)
+    captions: list[Caption] | None = Field(default=None, max_length=3000)
 
 
 def validate_plan(plan: Plan, assets: list[dict]) -> Plan:
@@ -85,6 +98,9 @@ def validate_plan(plan: Plan, assets: list[dict]) -> Plan:
     for clip in plan.clips:
         if not math.isfinite(clip.end) or clip.end <= clip.start or clip.end > total + 0.01:
             raise ValueError("Los clips deben estar dentro del podcast montado")
+    for caption in plan.captions or []:
+        if caption.end > total + 0.01:
+            raise ValueError("Los subtítulos deben estar dentro del podcast montado")
     return plan
 
 
@@ -103,4 +119,5 @@ def slice_plan(plan: Plan, start: float, end: float) -> Plan:
                 data["audio_start"] = (segment.audio_start if segment.audio_start is not None else segment.start) + offset
             result.append(Segment(**data))
         cursor += duration
-    return Plan(segments=result)
+    captions = None if plan.captions is None else [Caption(start=max(start, c.start)-start, end=min(end, c.end)-start, text=c.text) for c in plan.captions if min(end, c.end)>max(start, c.start)]
+    return Plan(segments=result, captions=captions)

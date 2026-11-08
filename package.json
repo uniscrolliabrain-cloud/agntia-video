@@ -1,19 +1,38 @@
 {
   "name": "@agntia/video",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Typed Agntia-video client, agent tools and authenticated Hono integration",
   "type": "module",
   "license": "MIT",
-  "bin": { "agntia-video": "scripts/agntia.mjs" },
+  "bin": {
+    "agntia-video": "scripts/agntia.mjs"
+  },
   "repository": "github:uniscrolliabrain-cloud/agntia-video",
-  "engines": { "node": ">=22.13.0" },
+  "engines": {
+    "node": ">=22.13.0"
+  },
   "packageManager": "pnpm@10.15.1",
   "exports": {
-    ".": { "types": "./typescript/client.ts", "import": "./dist/client.js" },
-    "./agents": { "types": "./typescript/agents.ts", "import": "./dist/agents.js" },
-    "./hono": { "types": "./typescript/hono.ts", "import": "./dist/hono.js" }
+    ".": {
+      "types": "./typescript/client.ts",
+      "import": "./dist/client.js"
+    },
+    "./agents": {
+      "types": "./typescript/agents.ts",
+      "import": "./dist/agents.js"
+    },
+    "./hono": {
+      "types": "./typescript/hono.ts",
+      "import": "./dist/hono.js"
+    }
   },
-  "files": ["dist", "typescript", "scripts/build.mjs", "scripts/agntia.mjs", "LICENSE"],
+  "files": [
+    "dist",
+    "typescript",
+    "scripts/build.mjs",
+    "scripts/agntia.mjs",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "node scripts/build.mjs",
     "prepare": "node scripts/build.mjs",
@@ -21,6 +40,11 @@
     "test": "node --test tests/typescript.test.mjs",
     "agntia": "node scripts/agntia.mjs"
   },
-  "dependencies": { "hono": "^4.10.0" },
-  "devDependencies": { "typescript": "^5.9.3", "@types/node": "^22.18.0" }
+  "dependencies": {
+    "hono": "^4.10.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "@types/node": "^22.18.0"
+  }
 }

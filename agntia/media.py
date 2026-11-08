@@ -103,6 +103,8 @@ def render(project: dict, plan: Plan, target: Path, vertical=False, preview=True
 
 
 def timeline_cues(project: dict, plan: Plan) -> list[dict]:
+    if plan.captions is not None:
+        return sorted([cue.model_dump() for cue in plan.captions], key=lambda cue: cue["start"])
     assets = {a["id"]: a for a in project["assets"]}
     cues, cursor = [], 0.0
     for segment in plan.segments:
@@ -115,6 +117,26 @@ def timeline_cues(project: dict, plan: Plan) -> list[dict]:
                 cues.append({"start": cursor + left - begin, "end": cursor + right - begin, "text": item["text"]})
         cursor += duration
     return sorted(cues, key=lambda cue: cue["start"])
+
+
+def thumbnail(project: dict, asset: dict) -> Path:
+    directory = asset_path(project["id"], asset).parent.parent / "thumbnails"
+    directory.mkdir(parents=True, exist_ok=True)
+    target = directory / f"{asset['id']}.png"
+    if target.exists():
+        return target
+    # Unique temporary names keep simultaneous browser requests from sharing an output.
+    with tempfile.TemporaryDirectory(dir=directory) as work:
+        temp = Path(work) / "thumb.png"
+        args = ["ffmpeg", "-nostdin", "-v", "error", "-y", "-t", "30", "-i", str(asset_path(project["id"], asset))]
+        if asset["has_video"]:
+            args += ["-vf", "scale=360:204:force_original_aspect_ratio=increase,crop=360:204", "-frames:v", "1"]
+        else:
+            args += ["-filter_complex", "[0:a]aformat=channel_layouts=mono,showwavespic=s=360x204:colors=0x9a81ed", "-frames:v", "1"]
+        args += ["-threads", "1", "-filter_threads", "1", "-filter_complex_threads", "1", str(temp)]
+        run(args, timeout=120)
+        temp.replace(target)
+    return target
 
 
 def srt(cues: list[dict]) -> str:
