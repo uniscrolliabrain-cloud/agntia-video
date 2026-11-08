@@ -4,6 +4,7 @@ import json
 import os
 import shutil
 import uuid
+from typing import Any
 from pathlib import Path
 from typing import Literal
 
@@ -15,7 +16,7 @@ from pydantic import Field
 from . import audio, jobs, media, providers, storage
 from .models import Plan, Settings, StrictModel, slice_plan, validate_plan, validate_settings
 
-app = FastAPI(title="Agntia-video", version="0.2.0")
+app = FastAPI(title="Agntia-video", version="0.3.0")
 STATIC = Path(__file__).parent / "static"
 
 
@@ -69,6 +70,11 @@ def status():
     return {"providers": providers.available(), "ffmpeg": bool(shutil.which("ffmpeg") and shutil.which("ffprobe")), "audio": audio.capabilities(), "inbox": str(storage.INBOX)}
 
 
+@app.get("/api/openapi.json", include_in_schema=False)
+def agent_openapi():
+    return app.openapi()
+
+
 @app.get("/api/projects")
 def projects():
     values = []
@@ -110,6 +116,41 @@ def save(pid: str, data: ProjectEdit):
         if data.settings.voice_enhancement == "ai" and not audio.capabilities()["voice_ai"]:
             raise ValueError("Tu FFmpeg no incluye arnndn o falta el modelo RNNoise. Usa limpieza clásica o instala FFmpeg con arnndn.")
         p.update(settings=data.settings.model_dump(), plan=data.plan.model_dump(), briefing=data.briefing, revision=p["revision"] + 1)
+        storage.write(p)
+    return p
+
+
+class ProjectPatch(StrictModel):
+    revision: int
+    briefing: str | None = Field(default=None, max_length=20000)
+    settings: dict[str, Any] | None = None
+    plan: Plan | None = None
+
+
+@app.patch("/api/projects/{pid}")
+def patch_project(pid: str, data: ProjectPatch):
+    """Apply partial settings atomically, without losing another editor's changes."""
+    with storage.LOCK:
+        p = storage.read(pid)
+        if data.revision != p["revision"]:
+            raise HTTPException(409, "El proyecto ha cambiado. Lee la versión actual antes de editar.")
+        settings = copy.deepcopy(p["settings"])
+        if data.settings is not None:
+            for key, value in data.settings.items():
+                if key == "music" and isinstance(value, dict):
+                    settings["music"].update(value)
+                else:
+                    settings[key] = value
+        validated = validate_settings(Settings.model_validate(settings), p["assets"])
+        if validated.voice_enhancement == "ai" and not audio.capabilities()["voice_ai"]:
+            raise ValueError("La mejora RNNoise no está disponible en este servidor")
+        if data.plan is not None:
+            validate_plan(data.plan, p["assets"])
+            p["plan"] = data.plan.model_dump()
+        if data.briefing is not None:
+            p["briefing"] = data.briefing
+        p["settings"] = validated.model_dump()
+        p["revision"] += 1
         storage.write(p)
     return p
 
@@ -348,6 +389,12 @@ def render(pid: str, data: RenderRequest):
 def project_jobs(pid: str):
     storage.read(pid)
     return jobs.list_jobs(pid)
+
+
+@app.get("/api/projects/{pid}/jobs/{jid}")
+def project_job(pid: str, jid: str):
+    storage.read(pid)
+    return jobs.get_job(pid, jid)
 
 
 @app.get("/api/projects/{pid}/renders/{group}/{filename}")

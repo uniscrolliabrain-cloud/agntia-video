@@ -2,7 +2,13 @@
 
 Un estudio de podcast en tu navegador: importa cámara, avatares, audios y B-roll; conversa sobre el briefing; revisa el montaje y exporta el episodio y sus clips verticales.
 
-**Versión 0.2 (MVP), para Windows y servidores Linux.** Funciona sin claves para cargar archivos, editar cortes, previsualizar y exportar. DeepSeek y Gemini son opcionales y se configuran después. No incluye claves ni créditos. Incluye un pequeño modelo RNNoise para limpiar voz localmente, sin API.
+**Versión 0.3 (MVP), para Windows y servidores Linux.** Funciona sin claves para cargar archivos, editar cortes, previsualizar y exportar. DeepSeek y Gemini son opcionales y se configuran después. No incluye claves ni créditos. Incluye un pequeño modelo RNNoise para limpiar voz localmente, sin API.
+
+## Integrarlo con tus agentes y Hono
+
+Incluye el paquete TypeScript `@agntia/video`, compatible con pnpm, un adaptador Hono con autenticación y 16 herramientas para tus agentes (17 con subidas autorizadas). Los agentes pueden crear/editar los mismos proyectos que una persona, configurar voz y música, detectar beats, generar previsualizaciones y consultar/descargar entregas. El motor Python/FFmpeg sigue ejecutándose como servicio; no necesita reescribirse en TypeScript.
+
+Consulta la [instalación para TypeScript, Hono y agentes](docs/typescript-agents.md), los [ejemplos](examples/) y la [guía de agentes](AGENTS.md). El paquete se instala desde GitHub o desde su artefacto compilado; no está publicado en npm.
 
 ## Qué puedes hacer
 

@@ -53,3 +53,13 @@ def list_jobs(pid: str):
                 job.update(status="error", message="Interrumpido al reiniciar. Puedes volver a lanzarlo.")
             values.append(job)
         return values
+
+
+def get_job(pid: str, jid: str):
+    storage.identifier(jid)
+    with LOCK:
+        path = storage.project_dir(pid) / "jobs" / f"{jid}.json"
+        job = json.loads(path.read_text(encoding="utf-8"))
+        if job["id"] not in JOBS and job["status"] in ("queued", "running"):
+            job.update(status="error", message="Interrumpido al reiniciar. Puedes volver a lanzarlo.")
+        return job

@@ -110,6 +110,31 @@ class StudioTests(unittest.TestCase):
         self.assertEqual(self.client.put(self.base, json=body).status_code, 409)
         self.assertEqual(self.client.get(self.base).json()["briefing"], "Uno")
 
+    def test_partial_agent_settings_preserve_music_and_reject_stale_revision(self):
+        p = storage.read(self.pid)
+        response = self.client.patch(self.base, json={"revision": p["revision"], "settings": {"music": {"volume": .25}, "voice_enhancement": "studio"}})
+        self.assertEqual(response.status_code, 200, response.text)
+        updated = response.json()
+        self.assertEqual(updated["settings"]["music"]["volume"], .25)
+        self.assertTrue(updated["settings"]["music"]["ducking"])
+        self.assertEqual(updated["settings"]["voice_enhancement"], "studio")
+        self.assertEqual(self.client.patch(self.base, json={"revision": p["revision"], "briefing": "stale"}).status_code, 409)
+        self.assertEqual(self.client.patch(self.base, json={"revision": updated["revision"], "settings": {"music": {"volume": 2}}}).status_code, 400)
+        self.assertEqual(storage.read(self.pid)["revision"], updated["revision"])
+
+    def test_agent_openapi_and_job_lookup_are_authenticated(self):
+        schema = self.client.get("/api/openapi.json")
+        self.assertEqual(schema.status_code, 200)
+        self.assertIn("patch", schema.json()["paths"]["/api/projects/{pid}"])
+        job = jobs.submit(self.pid, "test", lambda _: {"outputs": []})
+        self.wait(job["id"])
+        self.assertEqual(self.client.get(self.base+f"/jobs/{job['id']}").json()["status"], "done")
+        other = storage.create("Other")
+        self.assertEqual(self.client.get(f"/api/projects/{other['id']}/jobs/{job['id']}").status_code, 404)
+        with patch.dict(os.environ, {"AGNTIA_ACCESS_TOKEN": "test-token"}):
+            self.assertEqual(self.client.get("/api/openapi.json").status_code, 401)
+            self.assertEqual(self.client.get(self.base+f"/jobs/{job['id']}").status_code, 401)
+
     def test_audio_settings_saved_and_beat_adjustment_undo(self):
         video, song = self.upload(self.video), self.upload(self.audio)
         p = storage.read(self.pid)
