@@ -19,6 +19,17 @@ import httpx
 from playwright.sync_api import sync_playwright
 
 
+def wait_for(page, expression, timeout=30000):
+    # CDP evaluation works with the production CSP; wait_for_function uses eval
+    # inside the page, which correctly rejects unsafe-eval under that policy.
+    deadline = time.monotonic() + timeout/1000
+    while time.monotonic() < deadline:
+        if page.evaluate("() => (" + expression + ")"):
+            return
+        page.wait_for_timeout(100)
+    raise AssertionError("Browser condition did not become true: " + expression)
+
+
 def exercise(page, wav):
     page.get_by_role("button", name="Crear mi primer proyecto").click()
     page.locator("#new-name").fill("Podcast · prueba de sonido")
@@ -31,18 +42,18 @@ def exercise(page, wav):
     page.locator("#music-asset").select_option(index=1)
     page.locator("#music-volume").evaluate("el => { el.value = '20'; el.dispatchEvent(new Event('input', {bubbles:true})); }")
     page.locator("#save-button").click()
-    page.wait_for_function("document.querySelector('#save-state').textContent === 'Guardado'")
+    wait_for(page, "document.querySelector('#save-state').textContent === 'Guardado'")
     page.locator("#detect-beats").click()
-    page.wait_for_function("document.querySelector('#beat-info').textContent.includes('golpes detectados')", timeout=30000)
+    wait_for(page, "document.querySelector('#beat-info').textContent.includes('golpes detectados')", timeout=30000)
     page.locator("#add-segment").click()
     page.locator("#save-button").click()
-    page.wait_for_function("document.querySelector('#save-state').textContent === 'Guardado'")
+    wait_for(page, "document.querySelector('#save-state').textContent === 'Guardado'")
     page.locator("#preview-button").click()
-    page.wait_for_function("!document.querySelector('#player').hidden", timeout=60000)
-    page.wait_for_function("document.querySelector('#player').readyState >= 1", timeout=15000)
+    wait_for(page, "!document.querySelector('#player').hidden", timeout=60000)
+    wait_for(page, "document.querySelector('#player').readyState >= 1", timeout=15000)
     page.locator("#add-clip").click()
     page.locator("#save-button").click()
-    page.wait_for_function("document.querySelector('#save-state').textContent === 'Guardado'")
+    wait_for(page, "document.querySelector('#save-state').textContent === 'Guardado'")
     page.reload()
     page.locator("#workspace").wait_for(state="visible")
     assert page.locator("#voice-mode").input_value() == "ai"
