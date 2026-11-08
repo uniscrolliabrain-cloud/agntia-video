@@ -8,10 +8,32 @@ class StrictModel(BaseModel):
     model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
 
 
+class MusicSettings(StrictModel):
+    asset_id: str | None = None
+    volume: float = Field(default=0.15, ge=0, le=1)
+    start: float = Field(default=0, ge=0)
+    loop: bool = True
+    ducking: bool = True
+    fade_seconds: float = Field(default=1, ge=0, le=10)
+
+
 class Settings(StrictModel):
     source_language: Literal["auto", "es", "en", "fr"] = "auto"
     subtitles: Literal["off", "original", "es", "en", "fr"] = "off"
     fit: Literal["contain", "crop"] = "contain"
+    voice_enhancement: Literal["off", "studio", "ai"] = "off"
+    voice_strength: float = Field(default=0.8, ge=0, le=1)
+    music: MusicSettings = Field(default_factory=MusicSettings)
+
+
+def validate_settings(settings: Settings, assets: list[dict]) -> Settings:
+    if settings.music.asset_id:
+        asset = next((a for a in assets if a["id"] == settings.music.asset_id), None)
+        if not asset or not asset["has_audio"]:
+            raise ValueError("Elige un archivo con audio para la música")
+        if settings.music.start >= asset["duration"]:
+            raise ValueError("El inicio de la música debe estar dentro del archivo")
+    return settings
 
 
 class Segment(StrictModel):

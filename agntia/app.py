@@ -12,10 +12,10 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import Field
 
-from . import jobs, media, providers, storage
-from .models import Plan, Settings, StrictModel, slice_plan, validate_plan
+from . import audio, jobs, media, providers, storage
+from .models import Plan, Settings, StrictModel, slice_plan, validate_plan, validate_settings
 
-app = FastAPI(title="Agntia-video", version="0.1.0")
+app = FastAPI(title="Agntia-video", version="0.2.0")
 STATIC = Path(__file__).parent / "static"
 
 
@@ -66,7 +66,7 @@ def login(data: Login, request: Request):
 
 @app.get("/api/status")
 def status():
-    return {"providers": providers.available(), "ffmpeg": bool(shutil.which("ffmpeg") and shutil.which("ffprobe")), "inbox": str(storage.INBOX)}
+    return {"providers": providers.available(), "ffmpeg": bool(shutil.which("ffmpeg") and shutil.which("ffprobe")), "audio": audio.capabilities(), "inbox": str(storage.INBOX)}
 
 
 @app.get("/api/projects")
@@ -106,6 +106,9 @@ def save(pid: str, data: ProjectEdit):
         if data.revision != p["revision"]:
             raise HTTPException(409, "El proyecto ha cambiado. Recárgalo antes de guardar.")
         validate_plan(data.plan, p["assets"])
+        validate_settings(data.settings, p["assets"])
+        if data.settings.voice_enhancement == "ai" and not audio.capabilities()["voice_ai"]:
+            raise ValueError("Tu FFmpeg no incluye arnndn o falta el modelo RNNoise. Usa limpieza clásica o instala FFmpeg con arnndn.")
         p.update(settings=data.settings.model_dump(), plan=data.plan.model_dump(), briefing=data.briefing, revision=p["revision"] + 1)
         storage.write(p)
     return p
@@ -182,7 +185,7 @@ def import_inbox(pid: str):
 
 
 class AssetRole(StrictModel):
-    role: Literal["dialogue", "avatar", "broll", "audio"]
+    role: Literal["dialogue", "avatar", "broll", "audio", "music"]
 
 
 @app.patch("/api/projects/{pid}/assets/{aid}")
@@ -216,6 +219,8 @@ def analyze(pid: str):
         raise ValueError("Carga archivos antes de analizar")
     def work(progress):
         for asset in p["assets"]:
+            if asset["role"] == "music" or asset["id"] == p["settings"]["music"]["asset_id"]:
+                continue
             analysis = providers.analyze(p, asset, progress)
             with storage.LOCK:
                 current = storage.read(pid)
@@ -223,6 +228,62 @@ def analyze(pid: str):
                 current["revision"] += 1
                 storage.write(current)
     return jobs.submit(pid, "analysis", work)
+
+
+@app.post("/api/projects/{pid}/assets/{aid}/beats")
+def detect_music_beats(pid: str, aid: str):
+    p = storage.read(pid)
+    asset = next((a for a in p["assets"] if a["id"] == aid), None)
+    if not asset or not asset["has_audio"]:
+        raise ValueError("Selecciona un archivo que tenga audio")
+    def work(progress):
+        result = audio.detect_beats(p, asset, progress)
+        with storage.LOCK:
+            current = storage.read(pid)
+            next(a for a in current["assets"] if a["id"] == aid)["beats"] = result
+            current["revision"] += 1
+            storage.write(current)
+        return {"beat_count": len(result["times"]), "bpm": result["bpm"]}
+    return jobs.submit(pid, "beats", work)
+
+
+class BeatSnapRequest(StrictModel):
+    revision: int
+    tolerance: float = Field(default=0.2, gt=0, le=1)
+    minimum: float = Field(default=0.5, ge=0.2, le=10)
+
+
+@app.post("/api/projects/{pid}/snap-beats")
+def snap_music_beats(pid: str, data: BeatSnapRequest):
+    with storage.LOCK:
+        p = storage.read(pid)
+        if p["revision"] != data.revision:
+            raise HTTPException(409, "El proyecto ha cambiado. Recárgalo antes de ajustar los beats.")
+        plan, changed = audio.snap_to_beats(p, data.tolerance, data.minimum)
+        if changed:
+            p["beat_undo"] = {"before": copy.deepcopy(p["plan"]), "after": plan.model_dump()}
+            p["plan"] = plan.model_dump()
+            p["revision"] += 1
+            storage.write(p)
+    return {"project": p, "changed": changed}
+
+
+class UndoBeatsRequest(StrictModel):
+    revision: int
+
+
+@app.post("/api/projects/{pid}/undo-beats")
+def undo_music_beats(pid: str, data: UndoBeatsRequest):
+    with storage.LOCK:
+        p = storage.read(pid)
+        undo = p.get("beat_undo")
+        if data.revision != p["revision"] or not undo or undo["after"] != p["plan"]:
+            raise HTTPException(409, "El montaje cambió o no hay un ajuste de beats que deshacer")
+        p["plan"] = undo["before"]
+        p.pop("beat_undo")
+        p["revision"] += 1
+        storage.write(p)
+    return p
 
 
 class ChatMessage(StrictModel):
@@ -265,8 +326,8 @@ def render(pid: str, data: RenderRequest):
         group = uuid.uuid4().hex
         directory = storage.project_dir(pid) / "renders" / group
         outputs = []
-        variants = [("podcast", plan, False)] + [(f"clip-{n:02d}", slice_plan(plan, c.start, c.end), True) for n, c in enumerate(plan.clips, 1)]
-        for label, variant, vertical in variants:
+        variants = [("podcast", plan, False, 0)] + [(f"clip-{n:02d}", slice_plan(plan, c.start, c.end), True, c.start) for n, c in enumerate(plan.clips, 1)]
+        for label, variant, vertical, timeline_start in variants:
             progress(f"{'Previsualizando' if data.mode == 'preview' else 'Exportando'} {label}")
             cues = None
             language = p["settings"]["subtitles"]
@@ -277,7 +338,7 @@ def render(pid: str, data: RenderRequest):
                 if language != "original":
                     cues = providers.translate(cues, language)
             target = directory / f"{label}.mp4"
-            media.render(p, variant, target, vertical=vertical, preview=data.mode == "preview", cues=cues)
+            media.render(p, variant, target, vertical=vertical, preview=data.mode == "preview", cues=cues, timeline_start=timeline_start)
             outputs.append({"name": label, "url": f"/api/projects/{pid}/renders/{group}/{target.name}", "srt": f"/api/projects/{pid}/renders/{group}/{label}.srt" if cues else None})
         return {"outputs": outputs, "revision": p["revision"], "mode": data.mode}
     return jobs.submit(pid, data.mode, work)

@@ -8,6 +8,8 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+from .models import Settings
+
 load_dotenv()
 DATA = Path(os.getenv("AGNTIA_DATA_DIR", "./data")).resolve()
 INBOX = Path(os.getenv("AGNTIA_INBOX_DIR", "./inbox")).resolve()
@@ -26,7 +28,9 @@ def project_dir(pid: str) -> Path:
 
 def read(pid: str) -> dict:
     with LOCK:
-        return json.loads((project_dir(pid) / "project.json").read_text(encoding="utf-8"))
+        project = json.loads((project_dir(pid) / "project.json").read_text(encoding="utf-8"))
+        project["settings"] = Settings.model_validate(project["settings"]).model_dump()
+        return project
 
 
 def write(project: dict):
@@ -40,7 +44,7 @@ def write(project: dict):
 
 def create(name: str) -> dict:
     project = {"id": uuid.uuid4().hex, "name": name, "assets": [], "briefing": "", "messages": [],
-               "settings": {"source_language": "auto", "subtitles": "off", "fit": "contain"},
+               "settings": Settings().model_dump(),
                "plan": {"segments": [], "clips": []}, "revision": 0}
     write(project)
     return project

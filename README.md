@@ -2,7 +2,7 @@
 
 Un estudio de podcast en tu navegador: importa cámara, avatares, audios y B-roll; conversa sobre el briefing; revisa el montaje y exporta el episodio y sus clips verticales.
 
-**Primera versión funcional (MVP), para Windows y servidores Linux.** Funciona sin claves para cargar archivos, editar cortes, previsualizar y exportar. DeepSeek y Gemini son opcionales y se configuran después. No incluye claves, créditos ni modelos de IA locales.
+**Versión 0.2 (MVP), para Windows y servidores Linux.** Funciona sin claves para cargar archivos, editar cortes, previsualizar y exportar. DeepSeek y Gemini son opcionales y se configuran después. No incluye claves ni créditos. Incluye un pequeño modelo RNNoise para limpiar voz localmente, sin API.
 
 ## Qué puedes hacer
 
@@ -14,6 +14,9 @@ Un estudio de podcast en tu navegador: importa cámara, avatares, audios y B-rol
 - Elegir idioma del material (automático, español, inglés, francés) y subtítulos (sin, original o traducción a uno de esos idiomas).
 - Previsualizar el podcast y cada clip antes de exportar. MP4/H.264, podcast 1920×1080, clips 1080×1920. Subtítulos incrustados y SRT descargable cuando se activan.
 - Normalizar el audio del montaje, conservar la imagen completa con bandas o recortar al centro.
+- Mejorar la voz con IA local RNNoise o limpieza clásica, con intensidad ajustable.
+- Añadir música MP3/WAV/M4A, ajustar volumen e inicio, repetirla y bajar su nivel automáticamente cuando habla alguien.
+- Detectar golpes musicales, visualizar marcadores y acercar las transiciones existentes a beats cercanos, con margen elegible y opción de deshacer.
 - Descargar el plan de edición en JSON. Los originales se conservan; cada render crea archivos nuevos.
 
 ## Arranque en Windows
@@ -36,6 +39,20 @@ Abre **http://127.0.0.1:8000**. No hace falta activar la venv ni cambiar la pol�
 3. Escribe tu briefing. Con claves configuradas puedes analizar con Gemini y conversar con el agente para obtener propuestas de cortes.
 4. Añade los clips: sus tiempos corresponden al episodio **resultante**, después de los cortes, no a los archivos originales.
 5. Guarda, genera previsualización, revisa los resultados en **Entregas**, pide cambios o ajusta los cortes y exporta.
+
+## Voz, MP3 y edición al ritmo de los beats
+
+En el panel **Sonido**:
+
+1. En **Mejora de voz**, elige **Mejora con IA · RNNoise local**, ajusta la intensidad y genera una previsualización. Usa la biblioteca para escuchar el original y el reproductor para comparar el resultado. Se reduce ruido con una red neuronal; se añade claridad y compresión suave. No es el motor de CapCut y no reconstruye voz saturada ni garantiza eliminar reverberación. La limpieza clásica usa filtros de señal, sin IA.
+2. Pulsa **Añadir MP3 / audio**. La pista se clasifica como música y se selecciona automáticamente; puedes cambiarla por cualquier archivo con audio de la biblioteca. Ajusta volumen, inicio dentro de la canción, repetición y fundido. **Bajar música cuando hay voz** aplica compresión sidechain. Hay una sola banda sonora independiente, además del audio del diálogo.
+3. Pulsa **Detectar beats**. El análisis es local y no necesita claves. Muestra golpes percutivos estimados y BPM aproximados; no todos los golpes coinciden con el pulso musical. El detector funciona mejor con percusión clara y acepta canciones de hasta dos horas.
+4. Prepara al menos dos cortes y pulsa **Ajustar cortes a beats**. Se mueven sus finales a golpes cercanos dentro de 0,12/0,20/0,40 s (según el margen elegido), sin cambiar los puntos de inicio de las fuentes, la duración total del episodio ni los tiempos de los clips. Se omiten movimientos que excedan el material o dejen cortes demasiado breves. No se añaden cortes nuevos dentro de frases. Puedes **Deshacer ajuste** mientras el montaje siga siendo el mismo.
+5. Genera una previsualización, revisa que ninguna frase haya quedado cortada y exporta. Los clips conservan la posición musical que les corresponde dentro del episodio; si la canción termina sin repetición, el diálogo continúa. Los fundidos se aplican al principio y al final de cada entrega.
+
+La IA se ejecuta con el filtro **arnndn** de FFmpeg y el modelo incluido. Si tu FFmpeg no lo ofrece, la interfaz desactiva esa opción; instala una compilación completa con `arnndn` o usa la limpieza clásica. No requiere GPU, DeepSeek ni Gemini. El audio y los originales no se suben a proveedores para estas funciones. La música se decodifica temporalmente a PCM para evitar desfases de repetición por el padding del MP3; reserva espacio para esos temporales.
+
+El ajuste al beat cambia el contenido de los cortes: se orienta a recursos, intros y montajes con margen. Revisa el diálogo. La precisión visual está limitada por los 25 fotogramas por segundo del render. Los marcadores muestran la canción completa, y el ajuste respeta su inicio y repetición configurados.
 
 ## Claves para más adelante
 
@@ -93,7 +110,7 @@ docs/              Arquitectura, decisiones y referencias
 ## Límites de esta versión
 
 - La sincronización entre pistas es manual, mediante inicios de imagen/audio. No mezcla varias voces simultáneas, no hace multicámara simultáneo ni detecta automáticamente qué cámara corresponde a cada voz.
-- El B-roll sustituye la imagen de un corte mientras mantiene el audio elegido; no hay capas, transiciones, música de fondo mezclada, doblaje ni generación de avatares.
+- El B-roll sustituye la imagen de un corte mientras mantiene el audio elegido; no hay capas visuales, transiciones, doblaje ni generación de avatares. Sí admite una pista musical mezclada con el diálogo.
 - Los tiempos de Gemini son aproximados a nivel de frase. Revisa la transcripción, los recortes y los subtítulos. No hay alineación fonética ni subtítulos karaoke. Si recortas parte de una frase, su texto sigue siendo el de la frase original: ajusta el corte al límite de frase para evitar inconsistencias.
 - La elección de momentos depende del análisis y del briefing. Sin análisis, el agente debe explicarlo y no atribuir calidad al material que no ha visto. Los planes de IA se validan antes de guardarse; el agente modifica el plan, pero nunca renderiza sin pulsar un botón.
 - Encuadre fijo (imagen completa o centro), sin seguimiento de caras. Las previsualizaciones se renderizan a baja resolución; no es un editor de arrastrar clips sobre una pista gráfica en tiempo real.
@@ -106,13 +123,8 @@ python -m pip install -e '.[dev]'
 python -m pytest -q
 ```
 
-FFmpeg/ffprobe se requieren para las pruebas de integración. Las APIs de pago se prueban con respuestas controladas, sin gastar créditos. Para pruebas de navegador opcionales: `python -m playwright install chromium` y `python tests/browser_smoke.py` con el servidor en marcha.
+FFmpeg/ffprobe se requieren para las pruebas de integración. Las APIs de pago se prueban con respuestas controladas, sin gastar créditos. Para pruebas de navegador: `python -m playwright install chromium` y `python tests/browser_smoke.py`. El test conecta el navegador a la aplicación mediante rutas de Playwright: no necesita arrancar un servidor ni abrir puertos. Puedes usar un navegador existente con `AGNTIA_BROWSER_EXECUTABLE`. En GitHub Actions se ejecutan las pruebas y se guardan capturas de escritorio y móvil como artefactos.
 
 ## Referencias
 
-Estudiamos [auto-editor](https://github.com/WyattBlue/auto-editor), [WhisperX](https://github.com/m-bain/whisperX) y [FunClip](https://github.com/modelscope/FunClip). Esta primera versión implementa su propio flujo sobre FFmpeg; no incorpora su código ni instala sus modelos. Consulta las [decisiones y referencias](docs/architecture.md). El código propio se publica bajo MIT; los proveedores, FFmpeg y los medios tienen sus propias condiciones.
-
-
-## Estado de validación inicial
-
-El código y las pruebas se publican para conservar el trabajo. La validación completa local está en curso; las integraciones reales con DeepSeek y Gemini no se han ejecutado porque las claves se añadirán después. La imagen Docker y Windows no se han probado todavía en este entorno.
+Estudiamos [auto-editor](https://github.com/WyattBlue/auto-editor), [WhisperX](https://github.com/m-bain/whisperX) y [FunClip](https://github.com/modelscope/FunClip). Esta primera versión implementa su propio flujo sobre FFmpeg; no incorpora su código ni instala sus modelos. Consulta las [decisiones y referencias](docs/architecture.md). El código propio se publica bajo MIT. El modelo RNNoise tiene licencia BSD: consulta [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Los proveedores, FFmpeg y los medios tienen sus propias condiciones.

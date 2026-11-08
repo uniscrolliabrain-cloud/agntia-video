@@ -60,7 +60,11 @@ Si hay pistas separadas no supongas sincronización; pide aclarar offsets si hac
 Si el usuario pide solo modificar briefing, plan=null. Sin análisis/transcripción no puedes juzgar qué partes son las mejores:
 indícalo, conversa sobre el briefing y sugiere analizar. No cambies settings ni prometas operaciones no soportadas.
 Capacidades: cortes, concatenación, sustitución de imagen por B-roll con audio separado, clips 9:16,
-subtítulos seleccionables, normalización de audio. No hay mezcla multipista simultánea, doblaje ni generación de avatares.
+subtítulos seleccionables, normalización de audio. Hay mejora de voz local RNNoise, una pista musical independiente
+con volumen/ducking y detección de beats: se configuran en el panel Sonido. No puedes modificar esos ajustes
+desde tu respuesta; guía al usuario al panel. Para ajustar cortes a beats debe pulsar Ajustar cortes a beats.
+No uses música como segmento de diálogo salvo petición expresa. No hay mezcla de varias voces simultáneas,
+doblaje ni generación de avatares.
 Esquema JSON del plan: """ + json.dumps(Plan.model_json_schema()) + "\nContexto actual:\n" + json.dumps(context, ensure_ascii=False)
     messages = project["messages"][-12:] + [{"role": "user", "content": message}]
     answer = deepseek(system, messages)

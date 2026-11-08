@@ -110,6 +110,24 @@ class StudioTests(unittest.TestCase):
         self.assertEqual(self.client.put(self.base, json=body).status_code, 409)
         self.assertEqual(self.client.get(self.base).json()["briefing"], "Uno")
 
+    def test_audio_settings_saved_and_beat_adjustment_undo(self):
+        video, song = self.upload(self.video), self.upload(self.audio)
+        p = storage.read(self.pid)
+        p["assets"][1]["beats"] = {"times": [.5, 1, 1.5, 2, 2.5]}
+        p["settings"]["music"].update(asset_id=song["id"], volume=.2, ducking=True)
+        storage.write(p)
+        self.assertEqual(self.save({"segments": [{"asset_id": video["id"], "start": 0, "end": 1.1}, {"asset_id": video["id"], "start": 0, "end": 1.9}], "clips": []}).status_code, 200)
+        p = storage.read(self.pid)
+        response = self.client.post(self.base+"/snap-beats", json={"revision": p["revision"], "tolerance": .2})
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertEqual(response.json()["changed"], 1)
+        after = response.json()["project"]
+        self.assertAlmostEqual(after["plan"]["segments"][0]["end"], 1)
+        undone = self.client.post(self.base+"/undo-beats", json={"revision": after["revision"]})
+        self.assertEqual(undone.status_code, 200)
+        self.assertAlmostEqual(undone.json()["plan"]["segments"][0]["end"], 1.1)
+        self.assertEqual(undone.json()["settings"]["music"]["asset_id"], song["id"])
+
     def test_clip_crossing_cuts_preserves_audio_offsets(self):
         plan = Plan(segments=[Segment(asset_id="video1", start=10, end=15, audio_id="voice", audio_start=20), Segment(asset_id="video2", start=30, end=35)])
         clipped = slice_plan(plan, 3, 8)
@@ -138,7 +156,7 @@ class StudioTests(unittest.TestCase):
         self.assertAlmostEqual(info["duration"], 1.2, delta=.15)
         # Verify audio is the 880 Hz external track rather than the camera's 440 Hz.
         import subprocess
-        raw = subprocess.run(["ffmpeg", "-v", "error", "-i", str(path), "-ss", ".1", "-t", ".5", "-vn", "-ac", "1", "-ar", "8000", "-f", "s16le", "-"], check=True, capture_output=True).stdout
+        raw = subprocess.run(["ffmpeg", "-v", "error", "-i", str(path), "-ss", "0.1", "-t", "0.5", "-vn", "-ac", "1", "-ar", "8000", "-f", "s16le", "-"], check=True, capture_output=True).stdout
         samples = array.array("h", raw)
         crossings = sum(a < 0 <= b for a, b in zip(samples, samples[1:]))
         self.assertAlmostEqual(crossings / (len(samples) / 8000), 880, delta=25)

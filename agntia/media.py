@@ -3,7 +3,7 @@ import subprocess
 import tempfile
 from pathlib import Path
 
-from .models import Plan
+from .models import Plan, Settings, validate_settings
 from .storage import asset_path
 
 EXTENSIONS = {".mp4", ".mov", ".mkv", ".webm", ".avi", ".mp3", ".wav", ".m4a", ".aac", ".flac", ".ogg"}
@@ -40,11 +40,15 @@ def resize(width: int, height: int, fit: str) -> str:
     return f"scale={width}:{height}:force_original_aspect_ratio=decrease,pad={width}:{height}:(ow-iw)/2:(oh-ih)/2:color=0x10121a,setsar=1,fps=25"
 
 
-def render(project: dict, plan: Plan, target: Path, vertical=False, preview=True, cues=None):
+def render(project: dict, plan: Plan, target: Path, vertical=False, preview=True, cues=None, timeline_start=0.0):
+    from . import audio as audio_effects
     if not plan.segments:
         raise ValueError("Añade al menos un corte al montaje")
     width, height = ((270, 480) if vertical else (854, 480)) if preview else ((1080, 1920) if vertical else (1920, 1080))
     assets = {a["id"]: a for a in project["assets"]}
+    settings = validate_settings(Settings.model_validate(project["settings"]), project["assets"])
+    music = assets.get(settings.music.asset_id)
+    duration_total = sum(s.end-s.start for s in plan.segments)
     target.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="render-", dir=target.parent) as directory:
         work = Path(directory)
@@ -71,13 +75,28 @@ def render(project: dict, plan: Plan, target: Path, vertical=False, preview=True
             pieces.append(f"file '{output.name}'")
         (work / "concat.txt").write_text("\n".join(pieces), encoding="utf-8")
         run(["ffmpeg", "-nostdin", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", "concat.txt", "-c", "copy", "joined.mp4"], cwd=work)
-        args = ["ffmpeg", "-nostdin", "-v", "error", "-y", "-i", "joined.mp4"]
+        # Enhance the dialogue before mixing so music never enters the denoiser.
+        source = "joined.mp4"
+        if settings.voice_enhancement != "off":
+            voice = audio_effects.voice_filter(settings, work)
+            run(["ffmpeg", "-nostdin", "-v", "error", "-y", "-i", source, "-map", "0:v:0", "-map", "0:a:0", "-c:v", "copy", "-af", voice, "-c:a", "aac", "voice.mp4"], cwd=work)
+            source = "voice.mp4"
+        args = ["ffmpeg", "-nostdin", "-v", "error", "-y", "-i", source]
+        if music:
+            # Decode once to PCM: MP3 container padding must not shift loop/beat timing.
+            music_path = work / "music.wav"
+            run(["ffmpeg", "-nostdin", "-v", "error", "-y", "-i", str(asset_path(project["id"], music)), "-vn", "-ac", "2", "-ar", "48000", "-c:a", "pcm_s16le", str(music_path)])
+            music = {**music, "duration": probe(music_path)["duration"]}
+            if settings.music.loop:
+                args += ["-stream_loop", "-1"]
+            args += ["-i", "music.wav"]
+        args += ["-filter_complex_threads", "1", "-filter_complex", audio_effects.mix_filter(settings, duration_total, music, timeline_start), "-map", "0:v:0", "-map", "[outa]", "-t", str(duration_total)]
         if cues:
             (work / "subtitles.srt").write_text(srt(cues), encoding="utf-8")
             args += ["-vf", "subtitles=subtitles.srt", "-c:v", "libx264", "-preset", "ultrafast" if preview else "fast", "-crf", "25" if preview else "21", "-threads", "2", "-filter_threads", "1"]
         else:
             args += ["-c:v", "copy"]
-        args += ["-af", "loudnorm=I=-16:TP=-1.5:LRA=11", "-c:a", "aac", "-movflags", "+faststart", str(target.resolve())]
+        args += ["-c:a", "aac", "-movflags", "+faststart", str(target.resolve())]
         run(args, cwd=work)
     if cues:
         target.with_suffix(".srt").write_text(srt(cues), encoding="utf-8")
