@@ -1,0 +1,15 @@
+services:
+  studio:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    env_file: .env
+    environment:
+      AGNTIA_DATA_DIR: /app/data
+      AGNTIA_INBOX_DIR: /app/inbox
+    volumes:
+      - studio-data:/app/data
+      - ./inbox:/app/inbox:ro
+    restart: unless-stopped
+volumes:
+  studio-data:
