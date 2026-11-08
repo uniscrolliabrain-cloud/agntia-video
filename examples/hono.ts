@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { bearerAuth } from 'hono/bearer-auth';
-import { AgntiaClient } from '../typescript/client.ts';
-import { createAgntiaRouter } from '../typescript/hono.ts';
+import { AgntiaClient } from '../typescript/client.js';
+import { createAgntiaRouter } from '../typescript/hono.js';
 
 // In your other repo, change imports to @agntia/video and @agntia/video/hono.
 const app = new Hono();

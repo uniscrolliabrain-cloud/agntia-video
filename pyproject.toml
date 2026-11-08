@@ -15,5 +15,8 @@ dev = ["pytest>=8,<10", "playwright>=1.49,<2"]
 [tool.setuptools.package-data]
 agntia = ["static/*", "resources/*"]
 
+[tool.setuptools.packages.find]
+include = ["agntia*"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]

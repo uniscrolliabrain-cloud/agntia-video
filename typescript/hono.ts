@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
-import { AgntiaClient, AgntiaError } from './client.ts';
-import { createAgntiaTools } from './agents.ts';
-import type { AgentOptions } from './agents.ts';
+import { AgntiaClient, AgntiaError } from './client.js';
+import { createAgntiaTools } from './agents.js';
+import type { AgentOptions } from './agents.js';
 
 export interface HonoOptions extends AgentOptions {
   client: AgntiaClient;

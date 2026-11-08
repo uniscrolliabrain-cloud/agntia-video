@@ -1,5 +1,5 @@
-import { AgntiaClient } from './client.ts';
-import type { AssetRole, ProjectPatch } from './types.ts';
+import { AgntiaClient } from './client.js';
+import type { AssetRole, ProjectPatch } from './types.js';
 
 type Schema = {
   type?: string | string[]; properties?: Record<string, Schema>; required?: string[]; additionalProperties?: boolean;

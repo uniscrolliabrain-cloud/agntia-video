@@ -1,5 +1,5 @@
-import type { Asset, AssetRole, Job, Plan, Project, ProjectPatch, Status } from './types.ts';
-export type * from './types.ts';
+import type { Asset, AssetRole, Job, Plan, Project, ProjectPatch, Status } from './types.js';
+export type * from './types.js';
 
 export class AgntiaError extends Error {
   readonly status: number;

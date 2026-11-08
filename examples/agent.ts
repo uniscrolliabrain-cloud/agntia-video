@@ -1,5 +1,5 @@
-import { AgntiaClient } from '../typescript/client.ts';
-import { createAgntiaTools } from '../typescript/agents.ts';
+import { AgntiaClient } from '../typescript/client.js';
+import { createAgntiaTools } from '../typescript/agents.js';
 
 const client = new AgntiaClient({ baseUrl: process.env.AGNTIA_BASE_URL || 'http://127.0.0.1:8000', token: process.env.AGNTIA_ACCESS_TOKEN });
 export const videoTools = createAgntiaTools(client);
