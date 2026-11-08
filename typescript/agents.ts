@@ -69,7 +69,7 @@ export function createAgntiaTools(client: AgntiaClient, options: AgentOptions = 
   add('agntia_projects', 'List available podcast projects.', object({}), () => client.listProjects());
   add('agntia_create_project', 'Create a project. Do not retry blindly; keep the returned project ID.', object({ name: str(100) }), a => client.createProject(a.name as string));
   add('agntia_project', 'Read assets, transcripts, beat markers, settings, plan and current revision before editing.', object({ project_id: identifier }), a => client.getProject(a.project_id as string));
-  add('agntia_update_project', 'Edit briefing, ordered cuts, clips, AI voice or music. Include current revision. On 409 reread and reconcile; never overwrite blindly. Clips use output timeline seconds. Settings are merged.', object({ project_id: identifier, revision, briefing: { type: 'string', maxLength: 20000 }, settings, plan }, ['project_id', 'revision']), a => {
+  add('agntia_update_project', 'Edit briefing, ordered cuts, clips, manual captions, AI voice or music. Include current revision. On 409 reread and reconcile; never overwrite blindly. Clips use output timeline seconds. Settings are merged.', object({ project_id: identifier, revision, briefing: { type: 'string', maxLength: 20000 }, settings, plan }, ['project_id', 'revision']), a => {
     const { project_id, ...patch } = a;
     return client.updateProject(project_id as string, patch as unknown as ProjectPatch);
   });
