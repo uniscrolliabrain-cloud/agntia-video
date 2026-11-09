@@ -104,6 +104,79 @@ def exercise(page, wav):
     page.locator("#tab-media").click()
 
 
+def responsive_checks(browser, url, screenshots):
+    for width, height in [(390, 844), (320, 740), (768, 1024), (1024, 768), (844, 390)]:
+        context = browser.new_context(viewport={"width": width, "height": height}, is_mobile=True, has_touch=True, device_scale_factor=1)
+        page = context.new_page()
+        errors = []
+        page.on("pageerror", lambda error: errors.append(str(error)))
+        try:
+            page.goto(url)
+            page.locator("#project-list-open").tap()
+            wait_for(page, "document.querySelector('#mobile-project-select').options.length > 1")
+            page.locator("#mobile-project-select").select_option(index=1)
+            page.locator("#workspace").wait_for(state="visible")
+            page.locator("#project-dialog").wait_for(state="hidden")
+            assert page.evaluate("document.documentElement.scrollWidth <= innerWidth"), f"Layout overflows at {width}px"
+            page.locator("#mobile-agent-toggle").tap()
+            page.locator("#briefing-section").wait_for(state="visible")
+            assert page.locator("#briefing-section").get_attribute("role") == "dialog"
+            assert page.locator("#briefing-section").get_attribute("aria-modal") == "true"
+            draft = f"Conserva los debates y prepara tres clips. Pantalla {width}."
+            page.locator("#chat-input").fill(draft)
+            assert page.locator("#chat-send").is_disabled(), "No paid API calls in tests"
+            dock = page.locator("#briefing-section").bounding_box()
+            send = page.locator("#chat-send").bounding_box()
+            assert dock["width"] <= width + 1
+            assert dock["height"] <= height + 1
+            assert send["y"] >= 0 and send["y"] + send["height"] <= height + 1, "Composer clipped in compact viewport"
+            assert page.evaluate("document.querySelector('.app-header').inert"), "Background should be inert while chatting"
+            page.locator("#agent-close").focus()
+            page.keyboard.press("Shift+Tab")
+            assert page.evaluate("document.activeElement.id") == "chat-input", "Dialog focus should stay inside"
+            page.keyboard.press("Tab")
+            assert page.evaluate("document.activeElement.id") == "agent-close"
+            page.keyboard.press("Escape")
+            page.locator("#briefing-section").wait_for(state="hidden")
+            assert not page.evaluate("document.querySelector('.app-header').inert")
+            page.locator("#mobile-agent-toggle").tap()
+            assert page.locator("#chat-input").input_value() == draft, "Closing the chat must preserve draft"
+            if width == 390:
+                page.screenshot(path=str(screenshots / "studio-mobile-chat.png"))
+            page.locator("#chat-backdrop").tap(position={"x": 5, "y": 5})
+            page.locator("#briefing-section").wait_for(state="hidden")
+            if width == 390:
+                # Real touch editing and saving, including a touch-accessible history.
+                page.locator("#tab-cuts").tap()
+                end_field = page.locator("#segments input[type=number]").nth(1)
+                original = float(end_field.input_value())
+                end_field.fill(str(original-.2))
+                end_field.press("Tab")
+                page.locator("#touch-undo").tap()
+                assert float(page.locator("#segments input[type=number]").nth(1).input_value()) == original
+                page.locator("#touch-redo").tap()
+                assert abs(float(page.locator("#segments input[type=number]").nth(1).input_value())-(original-.2)) < .001
+                page.locator("#mobile-save").tap()
+                wait_for(page, "document.querySelector('#save-state').textContent === 'Guardado'")
+                page.locator("#segments input[type=number]").nth(1).fill(str(original))
+                page.locator("#segments input[type=number]").nth(1).press("Tab")
+                page.locator("#mobile-save").tap()
+                wait_for(page, "document.querySelector('#save-state').textContent === 'Guardado'")
+                page.locator("#tab-media").tap()
+                page.evaluate("window.scrollTo(0,0)")
+                page.screenshot(path=str(screenshots / "studio-mobile.png"), full_page=True)
+            if width == 768:
+                page.screenshot(path=str(screenshots / "studio-tablet.png"), full_page=True)
+            assert not errors, errors
+            print(f"PASS: touch layout {width}x{height}, project switcher, chat drawer, draft, focus trap, reachable composer")
+        except Exception:
+            print("RESPONSIVE PAGE ERRORS:", errors)
+            page.screenshot(path=str(screenshots / f"failure-{width}.png"), full_page=True)
+            raise
+        finally:
+            context.close()
+
+
 def main():
     screenshots = Path(os.getenv("AGNTIA_SCREENSHOT_DIR", "/tmp/agntia-screenshots"))
     screenshots.mkdir(parents=True, exist_ok=True)
@@ -142,11 +215,16 @@ def main():
                         page.goto(url)
                         exercise(page, wav)
                         assert not errors, errors
+                        dock = page.locator("#briefing-section").bounding_box()
+                        canvas = page.locator("#studio").bounding_box()
+                        assert dock["x"] >= canvas["x"]+canvas["width"]-1, "Chat must occupy the right column"
+                        page.locator("#chat-input").fill("Haz el montaje más ágil y conserva los debates.")
+                        page.locator("#tab-sound").click()
+                        assert page.locator("#briefing-section").is_visible(), "Chat must remain visible while editing"
+                        page.locator("#tab-media").click()
                         page.screenshot(path=str(screenshots / "studio-desktop.png"), full_page=True)
-                        page.set_viewport_size({"width": 390, "height": 844})
-                        page.screenshot(path=str(screenshots / "studio-mobile.png"), full_page=True)
-                        assert page.evaluate("document.documentElement.scrollWidth <= innerWidth"), "Mobile layout overflows"
-                        print("PASS: visual editor, split/trim/undo/redo, manual subtitles, audio/beats, real preview, persistence, desktop/mobile")
+                        responsive_checks(browser, url, screenshots)
+                        print("PASS: persistent desktop chat, visual editing and real touch/responsive workflow")
                     except Exception:
                         print("PAGE ERRORS:", errors)
                         print("TOAST:", page.locator("#toast").text_content())

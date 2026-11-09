@@ -27,7 +27,9 @@ Consulta la [instalación para TypeScript, Hono y agentes](docs/typescript-agent
 
 ## Editar el resultado desde el estudio
 
-La interfaz tiene biblioteca lateral, lienzo central, inspector del corte y línea de tiempo visual. Los proyectos y las operaciones siguen siendo los mismos para personas y agentes.
+La interfaz tiene biblioteca lateral, lienzo central, línea de tiempo visual y un **chat fijo del agente en la columna derecha**. Las propiedades del corte están en la pestaña **Cortes**, a la izquierda. Los proyectos y las operaciones siguen siendo los mismos para personas y agentes.
+
+En móvil, **Agente IA** abre el chat como panel inferior; en tablet, como panel lateral. Se puede cerrar para seguir editando sin perder el borrador de ese proyecto durante la sesión. Los campos se adaptan al espacio disponible con el teclado y el chat mantiene su área de escritura accesible. Los controles táctiles incluyen recorte, deshacer/rehacer y guardar. **Mis proyectos** permite cambiar de montaje desde el icono de carpeta de la cabecera. El chat muestra si falta la clave de DeepSeek y no simula respuestas cuando no está configurada.
 
 1. **Archivos**: sube o arrastra material. Pulsa ＋ en una tarjeta o arrástrala a la línea de tiempo para añadirla al montaje. Las miniaturas se generan a partir del material real.
 2. **Montaje**: selecciona un bloque para editar inicio, final, imagen y audio en el inspector. Arrastra los bordes para recortar y el cuerpo para reordenar. Divide con **S**, duplica o elimina desde la barra. **Ctrl/Cmd+Z**, **Ctrl/Cmd+Shift+Z** y **Ctrl/Cmd+S** permiten deshacer, rehacer y guardar. Los recortes desplazan los clips/subtítulos manuales posteriores para mantenerlos dentro del montaje.

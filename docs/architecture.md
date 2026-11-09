@@ -61,3 +61,11 @@ Biblioteca, lienzo, inspector y línea de tiempo SVG se apoyan en el mismo plan 
 El historial del navegador guarda solo plan, settings y briefing (hasta 70 pasos); nunca restaura una revisión antigua del servidor ni elimina archivos subidos. Un guardado conserva las referencias de los controles activos y no descarta ediciones realizadas durante la solicitud. Las miniaturas son PNG generados con FFmpeg y cacheados por archivo, con la misma autenticación que los originales.
 
 `plan.captions` añade subtítulos manuales compatibles con los clientes: `null` conserva el comportamiento anterior, `[]` suprime texto y una lista sustituye la transcripción. Los tiempos se validan contra el montaje y se recortan/desplazan al generar clips. El modelo y el SDK aceptan el campo de forma opcional para preservar proyectos anteriores.
+
+## Chat lateral y adaptación táctil
+
+El chat tiene una columna propia a la derecha en escritorio y no depende de la pestaña de herramientas seleccionada. El inspector se muestra en Cortes, a la izquierda. Por debajo de 1100 px, el mismo DOM del chat se presenta como panel superpuesto; en teléfonos, como panel inferior. No se duplican mensajes ni formularios al cambiar de tamaño.
+
+El panel móvil declara diálogo modal, mantiene el foco dentro y deja inerte el editor de fondo. Al cerrar, restaura el foco al botón de apertura y conserva el borrador por proyecto en memoria. La altura disponible se calcula con VisualViewport, con un modo compacto para ventanas bajas y ajustes de teclado. Las pruebas usan interacción táctil emulada en 320, 390, 768 y 1024 px, además de paisaje 844×390; no sustituyen pruebas de dispositivos físicos.
+
+Los campos táctiles usan tamaño de letra de 16 px para evitar el zoom automático de iOS. La línea de tiempo permite desplazarse desde la regla y las pistas, y reserva la interacción de los bloques para ordenar/recortar. Los controles de guardar e historial y el selector de proyectos están disponibles sin teclado físico.
