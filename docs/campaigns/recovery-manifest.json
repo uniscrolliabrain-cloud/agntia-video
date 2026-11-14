@@ -1,0 +1,1397 @@
+{
+  "schema_version": 1,
+  "kind": "RECOVERY_DELTA",
+  "repo": "uniscrolliabrain-cloud/agntia-video",
+  "created_on": "2026-11-14",
+  "delivery_scope": "DOCUMENTATION_ONLY",
+  "campaign_count": 18,
+  "task_count": 126,
+  "gate_scenario_count": 36,
+  "implementation_tests_executed_in_this_prep": 0,
+  "campaigns": [
+    {
+      "id": "VID-C01",
+      "sequence": 1,
+      "title": "Baseline MVP y pruebas reproducibles",
+      "objective": "Cerrar delta verificable de baseline mvp y pruebas reproducibles desde código y evidencias existentes sin reimplementar capacidades válidas.",
+      "status": "PLANNED_DELTA",
+      "depends_on": [],
+      "document": "docs/campaigns/01-baseline-mvp-y-pruebas-reproducibles.md",
+      "implementation_scaffold": "docs/implementation/01-baseline-mvp-y-pruebas-reproducibles/README.md",
+      "sources": [
+        "README.md",
+        "AGENTS.md",
+        "docs/architecture.md",
+        "docs/typescript-agents.md",
+        ".github/workflows/test.yml"
+      ],
+      "tasks": [
+        {
+          "id": "VID-C01-T01",
+          "action": "Congelar SHA y verificar código",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C01-T02",
+          "action": "Reconciliar evidencias históricas con HEAD",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C01-T03",
+          "action": "Especificar delta y superficies de escritura",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C01-T04",
+          "action": "Definir contratos y permisos con padre",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C01-T05",
+          "action": "Diseñar pruebas positivas y negativas",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C01-T06",
+          "action": "Recopilar evidencias y rollback",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C01-T07",
+          "action": "Gate Codex/arquitecto y founder",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        }
+      ],
+      "gate_scenarios": [
+        {
+          "id": "VID-C01-G01",
+          "scenario": "Tenant ajeno o permiso ausente bloquea acceso/efecto.",
+          "status": "NOT_EXECUTED"
+        },
+        {
+          "id": "VID-C01-G02",
+          "scenario": "Fallo o estado incierto evita duplicados y permite rollback.",
+          "status": "NOT_EXECUTED"
+        }
+      ],
+      "rollback": "Deshabilitar capacidad nueva, preservar datos/evidencias y conciliar efectos externos.",
+      "evidence_state": "NOT_VERIFIED_THIS_PREP"
+    },
+    {
+      "id": "VID-C02",
+      "sequence": 2,
+      "title": "Identidad y tokens actuales",
+      "objective": "Cerrar delta verificable de identidad y tokens actuales desde código y evidencias existentes sin reimplementar capacidades válidas.",
+      "status": "PLANNED_DELTA",
+      "depends_on": [
+        "VID-C01"
+      ],
+      "document": "docs/campaigns/02-identidad-y-tokens-actuales.md",
+      "implementation_scaffold": "docs/implementation/02-identidad-y-tokens-actuales/README.md",
+      "sources": [
+        "README.md",
+        "AGENTS.md",
+        "docs/architecture.md",
+        "docs/typescript-agents.md",
+        ".github/workflows/test.yml"
+      ],
+      "tasks": [
+        {
+          "id": "VID-C02-T01",
+          "action": "Congelar SHA y verificar código",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C02-T02",
+          "action": "Reconciliar evidencias históricas con HEAD",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C02-T03",
+          "action": "Especificar delta y superficies de escritura",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C02-T04",
+          "action": "Definir contratos y permisos con padre",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C02-T05",
+          "action": "Diseñar pruebas positivas y negativas",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C02-T06",
+          "action": "Recopilar evidencias y rollback",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C02-T07",
+          "action": "Gate Codex/arquitecto y founder",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        }
+      ],
+      "gate_scenarios": [
+        {
+          "id": "VID-C02-G01",
+          "scenario": "Tenant ajeno o permiso ausente bloquea acceso/efecto.",
+          "status": "NOT_EXECUTED"
+        },
+        {
+          "id": "VID-C02-G02",
+          "scenario": "Fallo o estado incierto evita duplicados y permite rollback.",
+          "status": "NOT_EXECUTED"
+        }
+      ],
+      "rollback": "Deshabilitar capacidad nueva, preservar datos/evidencias y conciliar efectos externos.",
+      "evidence_state": "NOT_VERIFIED_THIS_PREP"
+    },
+    {
+      "id": "VID-C03",
+      "sequence": 3,
+      "title": "Supabase JWT, twins y padre",
+      "objective": "Cerrar delta verificable de supabase jwt, twins y padre desde código y evidencias existentes sin reimplementar capacidades válidas.",
+      "status": "PLANNED_DELTA",
+      "depends_on": [
+        "VID-C02"
+      ],
+      "document": "docs/campaigns/03-supabase-jwt-twins-y-padre.md",
+      "implementation_scaffold": "docs/implementation/03-supabase-jwt-twins-y-padre/README.md",
+      "sources": [
+        "README.md",
+        "AGENTS.md",
+        "docs/architecture.md",
+        "docs/typescript-agents.md",
+        ".github/workflows/test.yml"
+      ],
+      "tasks": [
+        {
+          "id": "VID-C03-T01",
+          "action": "Congelar SHA y verificar código",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C03-T02",
+          "action": "Reconciliar evidencias históricas con HEAD",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C03-T03",
+          "action": "Especificar delta y superficies de escritura",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C03-T04",
+          "action": "Definir contratos y permisos con padre",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C03-T05",
+          "action": "Diseñar pruebas positivas y negativas",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C03-T06",
+          "action": "Recopilar evidencias y rollback",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C03-T07",
+          "action": "Gate Codex/arquitecto y founder",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        }
+      ],
+      "gate_scenarios": [
+        {
+          "id": "VID-C03-G01",
+          "scenario": "Tenant ajeno o permiso ausente bloquea acceso/efecto.",
+          "status": "NOT_EXECUTED"
+        },
+        {
+          "id": "VID-C03-G02",
+          "scenario": "Fallo o estado incierto evita duplicados y permite rollback.",
+          "status": "NOT_EXECUTED"
+        }
+      ],
+      "rollback": "Deshabilitar capacidad nueva, preservar datos/evidencias y conciliar efectos externos.",
+      "evidence_state": "NOT_VERIFIED_THIS_PREP"
+    },
+    {
+      "id": "VID-C04",
+      "sequence": 4,
+      "title": "Aislamiento de proyectos y assets",
+      "objective": "Cerrar delta verificable de aislamiento de proyectos y assets desde código y evidencias existentes sin reimplementar capacidades válidas.",
+      "status": "PLANNED_DELTA",
+      "depends_on": [
+        "VID-C03"
+      ],
+      "document": "docs/campaigns/04-aislamiento-de-proyectos-y-assets.md",
+      "implementation_scaffold": "docs/implementation/04-aislamiento-de-proyectos-y-assets/README.md",
+      "sources": [
+        "README.md",
+        "AGENTS.md",
+        "docs/architecture.md",
+        "docs/typescript-agents.md",
+        ".github/workflows/test.yml"
+      ],
+      "tasks": [
+        {
+          "id": "VID-C04-T01",
+          "action": "Congelar SHA y verificar código",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C04-T02",
+          "action": "Reconciliar evidencias históricas con HEAD",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C04-T03",
+          "action": "Especificar delta y superficies de escritura",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C04-T04",
+          "action": "Definir contratos y permisos con padre",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C04-T05",
+          "action": "Diseñar pruebas positivas y negativas",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C04-T06",
+          "action": "Recopilar evidencias y rollback",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C04-T07",
+          "action": "Gate Codex/arquitecto y founder",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        }
+      ],
+      "gate_scenarios": [
+        {
+          "id": "VID-C04-G01",
+          "scenario": "Tenant ajeno o permiso ausente bloquea acceso/efecto.",
+          "status": "NOT_EXECUTED"
+        },
+        {
+          "id": "VID-C04-G02",
+          "scenario": "Fallo o estado incierto evita duplicados y permite rollback.",
+          "status": "NOT_EXECUTED"
+        }
+      ],
+      "rollback": "Deshabilitar capacidad nueva, preservar datos/evidencias y conciliar efectos externos.",
+      "evidence_state": "NOT_VERIFIED_THIS_PREP"
+    },
+    {
+      "id": "VID-C05",
+      "sequence": 5,
+      "title": "Concurrencia revision/409",
+      "objective": "Cerrar delta verificable de concurrencia revision/409 desde código y evidencias existentes sin reimplementar capacidades válidas.",
+      "status": "PLANNED_DELTA",
+      "depends_on": [
+        "VID-C04"
+      ],
+      "document": "docs/campaigns/05-concurrencia-revision-409.md",
+      "implementation_scaffold": "docs/implementation/05-concurrencia-revision-409/README.md",
+      "sources": [
+        "README.md",
+        "AGENTS.md",
+        "docs/architecture.md",
+        "docs/typescript-agents.md",
+        ".github/workflows/test.yml"
+      ],
+      "tasks": [
+        {
+          "id": "VID-C05-T01",
+          "action": "Congelar SHA y verificar código",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C05-T02",
+          "action": "Reconciliar evidencias históricas con HEAD",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C05-T03",
+          "action": "Especificar delta y superficies de escritura",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C05-T04",
+          "action": "Definir contratos y permisos con padre",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C05-T05",
+          "action": "Diseñar pruebas positivas y negativas",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C05-T06",
+          "action": "Recopilar evidencias y rollback",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C05-T07",
+          "action": "Gate Codex/arquitecto y founder",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        }
+      ],
+      "gate_scenarios": [
+        {
+          "id": "VID-C05-G01",
+          "scenario": "Tenant ajeno o permiso ausente bloquea acceso/efecto.",
+          "status": "NOT_EXECUTED"
+        },
+        {
+          "id": "VID-C05-G02",
+          "scenario": "Fallo o estado incierto evita duplicados y permite rollback.",
+          "status": "NOT_EXECUTED"
+        }
+      ],
+      "rollback": "Deshabilitar capacidad nueva, preservar datos/evidencias y conciliar efectos externos.",
+      "evidence_state": "NOT_VERIFIED_THIS_PREP"
+    },
+    {
+      "id": "VID-C06",
+      "sequence": 6,
+      "title": "Subidas y rutas no confiables",
+      "objective": "Cerrar delta verificable de subidas y rutas no confiables desde código y evidencias existentes sin reimplementar capacidades válidas.",
+      "status": "PLANNED_DELTA",
+      "depends_on": [
+        "VID-C05"
+      ],
+      "document": "docs/campaigns/06-subidas-y-rutas-no-confiables.md",
+      "implementation_scaffold": "docs/implementation/06-subidas-y-rutas-no-confiables/README.md",
+      "sources": [
+        "README.md",
+        "AGENTS.md",
+        "docs/architecture.md",
+        "docs/typescript-agents.md",
+        ".github/workflows/test.yml"
+      ],
+      "tasks": [
+        {
+          "id": "VID-C06-T01",
+          "action": "Congelar SHA y verificar código",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C06-T02",
+          "action": "Reconciliar evidencias históricas con HEAD",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C06-T03",
+          "action": "Especificar delta y superficies de escritura",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C06-T04",
+          "action": "Definir contratos y permisos con padre",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C06-T05",
+          "action": "Diseñar pruebas positivas y negativas",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C06-T06",
+          "action": "Recopilar evidencias y rollback",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C06-T07",
+          "action": "Gate Codex/arquitecto y founder",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        }
+      ],
+      "gate_scenarios": [
+        {
+          "id": "VID-C06-G01",
+          "scenario": "Tenant ajeno o permiso ausente bloquea acceso/efecto.",
+          "status": "NOT_EXECUTED"
+        },
+        {
+          "id": "VID-C06-G02",
+          "scenario": "Fallo o estado incierto evita duplicados y permite rollback.",
+          "status": "NOT_EXECUTED"
+        }
+      ],
+      "rollback": "Deshabilitar capacidad nueva, preservar datos/evidencias y conciliar efectos externos.",
+      "evidence_state": "NOT_VERIFIED_THIS_PREP"
+    },
+    {
+      "id": "VID-C07",
+      "sequence": 7,
+      "title": "Jobs, colas y cancelación",
+      "objective": "Cerrar delta verificable de jobs, colas y cancelación desde código y evidencias existentes sin reimplementar capacidades válidas.",
+      "status": "PLANNED_DELTA",
+      "depends_on": [
+        "VID-C06"
+      ],
+      "document": "docs/campaigns/07-jobs-colas-y-cancelacion.md",
+      "implementation_scaffold": "docs/implementation/07-jobs-colas-y-cancelacion/README.md",
+      "sources": [
+        "README.md",
+        "AGENTS.md",
+        "docs/architecture.md",
+        "docs/typescript-agents.md",
+        ".github/workflows/test.yml"
+      ],
+      "tasks": [
+        {
+          "id": "VID-C07-T01",
+          "action": "Congelar SHA y verificar código",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C07-T02",
+          "action": "Reconciliar evidencias históricas con HEAD",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C07-T03",
+          "action": "Especificar delta y superficies de escritura",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C07-T04",
+          "action": "Definir contratos y permisos con padre",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C07-T05",
+          "action": "Diseñar pruebas positivas y negativas",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C07-T06",
+          "action": "Recopilar evidencias y rollback",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C07-T07",
+          "action": "Gate Codex/arquitecto y founder",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        }
+      ],
+      "gate_scenarios": [
+        {
+          "id": "VID-C07-G01",
+          "scenario": "Tenant ajeno o permiso ausente bloquea acceso/efecto.",
+          "status": "NOT_EXECUTED"
+        },
+        {
+          "id": "VID-C07-G02",
+          "scenario": "Fallo o estado incierto evita duplicados y permite rollback.",
+          "status": "NOT_EXECUTED"
+        }
+      ],
+      "rollback": "Deshabilitar capacidad nueva, preservar datos/evidencias y conciliar efectos externos.",
+      "evidence_state": "NOT_VERIFIED_THIS_PREP"
+    },
+    {
+      "id": "VID-C08",
+      "sequence": 8,
+      "title": "FFmpeg y RNNoise",
+      "objective": "Cerrar delta verificable de ffmpeg y rnnoise desde código y evidencias existentes sin reimplementar capacidades válidas.",
+      "status": "PLANNED_DELTA",
+      "depends_on": [
+        "VID-C07"
+      ],
+      "document": "docs/campaigns/08-ffmpeg-y-rnnoise.md",
+      "implementation_scaffold": "docs/implementation/08-ffmpeg-y-rnnoise/README.md",
+      "sources": [
+        "README.md",
+        "AGENTS.md",
+        "docs/architecture.md",
+        "docs/typescript-agents.md",
+        ".github/workflows/test.yml"
+      ],
+      "tasks": [
+        {
+          "id": "VID-C08-T01",
+          "action": "Congelar SHA y verificar código",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C08-T02",
+          "action": "Reconciliar evidencias históricas con HEAD",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C08-T03",
+          "action": "Especificar delta y superficies de escritura",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C08-T04",
+          "action": "Definir contratos y permisos con padre",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C08-T05",
+          "action": "Diseñar pruebas positivas y negativas",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C08-T06",
+          "action": "Recopilar evidencias y rollback",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C08-T07",
+          "action": "Gate Codex/arquitecto y founder",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        }
+      ],
+      "gate_scenarios": [
+        {
+          "id": "VID-C08-G01",
+          "scenario": "Tenant ajeno o permiso ausente bloquea acceso/efecto.",
+          "status": "NOT_EXECUTED"
+        },
+        {
+          "id": "VID-C08-G02",
+          "scenario": "Fallo o estado incierto evita duplicados y permite rollback.",
+          "status": "NOT_EXECUTED"
+        }
+      ],
+      "rollback": "Deshabilitar capacidad nueva, preservar datos/evidencias y conciliar efectos externos.",
+      "evidence_state": "NOT_VERIFIED_THIS_PREP"
+    },
+    {
+      "id": "VID-C09",
+      "sequence": 9,
+      "title": "Timecodes, subtítulos y clips",
+      "objective": "Cerrar delta verificable de timecodes, subtítulos y clips desde código y evidencias existentes sin reimplementar capacidades válidas.",
+      "status": "PLANNED_DELTA",
+      "depends_on": [
+        "VID-C08"
+      ],
+      "document": "docs/campaigns/09-timecodes-subtitulos-y-clips.md",
+      "implementation_scaffold": "docs/implementation/09-timecodes-subtitulos-y-clips/README.md",
+      "sources": [
+        "README.md",
+        "AGENTS.md",
+        "docs/architecture.md",
+        "docs/typescript-agents.md",
+        ".github/workflows/test.yml"
+      ],
+      "tasks": [
+        {
+          "id": "VID-C09-T01",
+          "action": "Congelar SHA y verificar código",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C09-T02",
+          "action": "Reconciliar evidencias históricas con HEAD",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C09-T03",
+          "action": "Especificar delta y superficies de escritura",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C09-T04",
+          "action": "Definir contratos y permisos con padre",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C09-T05",
+          "action": "Diseñar pruebas positivas y negativas",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C09-T06",
+          "action": "Recopilar evidencias y rollback",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C09-T07",
+          "action": "Gate Codex/arquitecto y founder",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        }
+      ],
+      "gate_scenarios": [
+        {
+          "id": "VID-C09-G01",
+          "scenario": "Tenant ajeno o permiso ausente bloquea acceso/efecto.",
+          "status": "NOT_EXECUTED"
+        },
+        {
+          "id": "VID-C09-G02",
+          "scenario": "Fallo o estado incierto evita duplicados y permite rollback.",
+          "status": "NOT_EXECUTED"
+        }
+      ],
+      "rollback": "Deshabilitar capacidad nueva, preservar datos/evidencias y conciliar efectos externos.",
+      "evidence_state": "NOT_VERIFIED_THIS_PREP"
+    },
+    {
+      "id": "VID-C10",
+      "sequence": 10,
+      "title": "Derechos de media y voz",
+      "objective": "Cerrar delta verificable de derechos de media y voz desde código y evidencias existentes sin reimplementar capacidades válidas.",
+      "status": "PLANNED_DELTA",
+      "depends_on": [
+        "VID-C09"
+      ],
+      "document": "docs/campaigns/10-derechos-de-media-y-voz.md",
+      "implementation_scaffold": "docs/implementation/10-derechos-de-media-y-voz/README.md",
+      "sources": [
+        "README.md",
+        "AGENTS.md",
+        "docs/architecture.md",
+        "docs/typescript-agents.md",
+        ".github/workflows/test.yml"
+      ],
+      "tasks": [
+        {
+          "id": "VID-C10-T01",
+          "action": "Congelar SHA y verificar código",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C10-T02",
+          "action": "Reconciliar evidencias históricas con HEAD",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C10-T03",
+          "action": "Especificar delta y superficies de escritura",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C10-T04",
+          "action": "Definir contratos y permisos con padre",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C10-T05",
+          "action": "Diseñar pruebas positivas y negativas",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C10-T06",
+          "action": "Recopilar evidencias y rollback",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C10-T07",
+          "action": "Gate Codex/arquitecto y founder",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        }
+      ],
+      "gate_scenarios": [
+        {
+          "id": "VID-C10-G01",
+          "scenario": "Tenant ajeno o permiso ausente bloquea acceso/efecto.",
+          "status": "NOT_EXECUTED"
+        },
+        {
+          "id": "VID-C10-G02",
+          "scenario": "Fallo o estado incierto evita duplicados y permite rollback.",
+          "status": "NOT_EXECUTED"
+        }
+      ],
+      "rollback": "Deshabilitar capacidad nueva, preservar datos/evidencias y conciliar efectos externos.",
+      "evidence_state": "NOT_VERIFIED_THIS_PREP"
+    },
+    {
+      "id": "VID-C11",
+      "sequence": 11,
+      "title": "Anam y voces opt-in",
+      "objective": "Cerrar delta verificable de anam y voces opt-in desde código y evidencias existentes sin reimplementar capacidades válidas.",
+      "status": "PLANNED_DELTA",
+      "depends_on": [
+        "VID-C10"
+      ],
+      "document": "docs/campaigns/11-anam-y-voces-opt-in.md",
+      "implementation_scaffold": "docs/implementation/11-anam-y-voces-opt-in/README.md",
+      "sources": [
+        "README.md",
+        "AGENTS.md",
+        "docs/architecture.md",
+        "docs/typescript-agents.md",
+        ".github/workflows/test.yml"
+      ],
+      "tasks": [
+        {
+          "id": "VID-C11-T01",
+          "action": "Congelar SHA y verificar código",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C11-T02",
+          "action": "Reconciliar evidencias históricas con HEAD",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C11-T03",
+          "action": "Especificar delta y superficies de escritura",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C11-T04",
+          "action": "Definir contratos y permisos con padre",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C11-T05",
+          "action": "Diseñar pruebas positivas y negativas",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C11-T06",
+          "action": "Recopilar evidencias y rollback",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C11-T07",
+          "action": "Gate Codex/arquitecto y founder",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        }
+      ],
+      "gate_scenarios": [
+        {
+          "id": "VID-C11-G01",
+          "scenario": "Tenant ajeno o permiso ausente bloquea acceso/efecto.",
+          "status": "NOT_EXECUTED"
+        },
+        {
+          "id": "VID-C11-G02",
+          "scenario": "Fallo o estado incierto evita duplicados y permite rollback.",
+          "status": "NOT_EXECUTED"
+        }
+      ],
+      "rollback": "Deshabilitar capacidad nueva, preservar datos/evidencias y conciliar efectos externos.",
+      "evidence_state": "NOT_VERIFIED_THIS_PREP"
+    },
+    {
+      "id": "VID-C12",
+      "sequence": 12,
+      "title": "Backups y retención",
+      "objective": "Cerrar delta verificable de backups y retención desde código y evidencias existentes sin reimplementar capacidades válidas.",
+      "status": "PLANNED_DELTA",
+      "depends_on": [
+        "VID-C11"
+      ],
+      "document": "docs/campaigns/12-backups-y-retencion.md",
+      "implementation_scaffold": "docs/implementation/12-backups-y-retencion/README.md",
+      "sources": [
+        "README.md",
+        "AGENTS.md",
+        "docs/architecture.md",
+        "docs/typescript-agents.md",
+        ".github/workflows/test.yml"
+      ],
+      "tasks": [
+        {
+          "id": "VID-C12-T01",
+          "action": "Congelar SHA y verificar código",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C12-T02",
+          "action": "Reconciliar evidencias históricas con HEAD",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C12-T03",
+          "action": "Especificar delta y superficies de escritura",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C12-T04",
+          "action": "Definir contratos y permisos con padre",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C12-T05",
+          "action": "Diseñar pruebas positivas y negativas",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C12-T06",
+          "action": "Recopilar evidencias y rollback",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C12-T07",
+          "action": "Gate Codex/arquitecto y founder",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        }
+      ],
+      "gate_scenarios": [
+        {
+          "id": "VID-C12-G01",
+          "scenario": "Tenant ajeno o permiso ausente bloquea acceso/efecto.",
+          "status": "NOT_EXECUTED"
+        },
+        {
+          "id": "VID-C12-G02",
+          "scenario": "Fallo o estado incierto evita duplicados y permite rollback.",
+          "status": "NOT_EXECUTED"
+        }
+      ],
+      "rollback": "Deshabilitar capacidad nueva, preservar datos/evidencias y conciliar efectos externos.",
+      "evidence_state": "NOT_VERIFIED_THIS_PREP"
+    },
+    {
+      "id": "VID-C13",
+      "sequence": 13,
+      "title": "SDK TypeScript/Hono y tool ACL",
+      "objective": "Cerrar delta verificable de sdk typescript/hono y tool acl desde código y evidencias existentes sin reimplementar capacidades válidas.",
+      "status": "PLANNED_DELTA",
+      "depends_on": [
+        "VID-C12"
+      ],
+      "document": "docs/campaigns/13-sdk-typescript-hono-y-tool-acl.md",
+      "implementation_scaffold": "docs/implementation/13-sdk-typescript-hono-y-tool-acl/README.md",
+      "sources": [
+        "README.md",
+        "AGENTS.md",
+        "docs/architecture.md",
+        "docs/typescript-agents.md",
+        ".github/workflows/test.yml"
+      ],
+      "tasks": [
+        {
+          "id": "VID-C13-T01",
+          "action": "Congelar SHA y verificar código",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C13-T02",
+          "action": "Reconciliar evidencias históricas con HEAD",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C13-T03",
+          "action": "Especificar delta y superficies de escritura",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C13-T04",
+          "action": "Definir contratos y permisos con padre",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C13-T05",
+          "action": "Diseñar pruebas positivas y negativas",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C13-T06",
+          "action": "Recopilar evidencias y rollback",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C13-T07",
+          "action": "Gate Codex/arquitecto y founder",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        }
+      ],
+      "gate_scenarios": [
+        {
+          "id": "VID-C13-G01",
+          "scenario": "Tenant ajeno o permiso ausente bloquea acceso/efecto.",
+          "status": "NOT_EXECUTED"
+        },
+        {
+          "id": "VID-C13-G02",
+          "scenario": "Fallo o estado incierto evita duplicados y permite rollback.",
+          "status": "NOT_EXECUTED"
+        }
+      ],
+      "rollback": "Deshabilitar capacidad nueva, preservar datos/evidencias y conciliar efectos externos.",
+      "evidence_state": "NOT_VERIFIED_THIS_PREP"
+    },
+    {
+      "id": "VID-C14",
+      "sequence": 14,
+      "title": "ADTC y reconciliación de export",
+      "objective": "Cerrar delta verificable de adtc y reconciliación de export desde código y evidencias existentes sin reimplementar capacidades válidas.",
+      "status": "PLANNED_DELTA",
+      "depends_on": [
+        "VID-C13"
+      ],
+      "document": "docs/campaigns/14-adtc-y-reconciliacion-de-export.md",
+      "implementation_scaffold": "docs/implementation/14-adtc-y-reconciliacion-de-export/README.md",
+      "sources": [
+        "README.md",
+        "AGENTS.md",
+        "docs/architecture.md",
+        "docs/typescript-agents.md",
+        ".github/workflows/test.yml"
+      ],
+      "tasks": [
+        {
+          "id": "VID-C14-T01",
+          "action": "Congelar SHA y verificar código",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C14-T02",
+          "action": "Reconciliar evidencias históricas con HEAD",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C14-T03",
+          "action": "Especificar delta y superficies de escritura",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C14-T04",
+          "action": "Definir contratos y permisos con padre",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C14-T05",
+          "action": "Diseñar pruebas positivas y negativas",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C14-T06",
+          "action": "Recopilar evidencias y rollback",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C14-T07",
+          "action": "Gate Codex/arquitecto y founder",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        }
+      ],
+      "gate_scenarios": [
+        {
+          "id": "VID-C14-G01",
+          "scenario": "Tenant ajeno o permiso ausente bloquea acceso/efecto.",
+          "status": "NOT_EXECUTED"
+        },
+        {
+          "id": "VID-C14-G02",
+          "scenario": "Fallo o estado incierto evita duplicados y permite rollback.",
+          "status": "NOT_EXECUTED"
+        }
+      ],
+      "rollback": "Deshabilitar capacidad nueva, preservar datos/evidencias y conciliar efectos externos.",
+      "evidence_state": "NOT_VERIFIED_THIS_PREP"
+    },
+    {
+      "id": "VID-C15",
+      "sequence": 15,
+      "title": "QA y regresión audiovisual",
+      "objective": "Cerrar delta verificable de qa y regresión audiovisual desde código y evidencias existentes sin reimplementar capacidades válidas.",
+      "status": "PLANNED_DELTA",
+      "depends_on": [
+        "VID-C14"
+      ],
+      "document": "docs/campaigns/15-qa-y-regresion-audiovisual.md",
+      "implementation_scaffold": "docs/implementation/15-qa-y-regresion-audiovisual/README.md",
+      "sources": [
+        "README.md",
+        "AGENTS.md",
+        "docs/architecture.md",
+        "docs/typescript-agents.md",
+        ".github/workflows/test.yml"
+      ],
+      "tasks": [
+        {
+          "id": "VID-C15-T01",
+          "action": "Congelar SHA y verificar código",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C15-T02",
+          "action": "Reconciliar evidencias históricas con HEAD",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C15-T03",
+          "action": "Especificar delta y superficies de escritura",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C15-T04",
+          "action": "Definir contratos y permisos con padre",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C15-T05",
+          "action": "Diseñar pruebas positivas y negativas",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C15-T06",
+          "action": "Recopilar evidencias y rollback",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C15-T07",
+          "action": "Gate Codex/arquitecto y founder",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        }
+      ],
+      "gate_scenarios": [
+        {
+          "id": "VID-C15-G01",
+          "scenario": "Tenant ajeno o permiso ausente bloquea acceso/efecto.",
+          "status": "NOT_EXECUTED"
+        },
+        {
+          "id": "VID-C15-G02",
+          "scenario": "Fallo o estado incierto evita duplicados y permite rollback.",
+          "status": "NOT_EXECUTED"
+        }
+      ],
+      "rollback": "Deshabilitar capacidad nueva, preservar datos/evidencias y conciliar efectos externos.",
+      "evidence_state": "NOT_VERIFIED_THIS_PREP"
+    },
+    {
+      "id": "VID-C16",
+      "sequence": 16,
+      "title": "Dos tenants sintéticos E2E",
+      "objective": "Cerrar delta verificable de dos tenants sintéticos e2e desde código y evidencias existentes sin reimplementar capacidades válidas.",
+      "status": "PLANNED_DELTA",
+      "depends_on": [
+        "VID-C15"
+      ],
+      "document": "docs/campaigns/16-dos-tenants-sinteticos-e2e.md",
+      "implementation_scaffold": "docs/implementation/16-dos-tenants-sinteticos-e2e/README.md",
+      "sources": [
+        "README.md",
+        "AGENTS.md",
+        "docs/architecture.md",
+        "docs/typescript-agents.md",
+        ".github/workflows/test.yml"
+      ],
+      "tasks": [
+        {
+          "id": "VID-C16-T01",
+          "action": "Congelar SHA y verificar código",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C16-T02",
+          "action": "Reconciliar evidencias históricas con HEAD",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C16-T03",
+          "action": "Especificar delta y superficies de escritura",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C16-T04",
+          "action": "Definir contratos y permisos con padre",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C16-T05",
+          "action": "Diseñar pruebas positivas y negativas",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C16-T06",
+          "action": "Recopilar evidencias y rollback",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C16-T07",
+          "action": "Gate Codex/arquitecto y founder",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        }
+      ],
+      "gate_scenarios": [
+        {
+          "id": "VID-C16-G01",
+          "scenario": "Tenant ajeno o permiso ausente bloquea acceso/efecto.",
+          "status": "NOT_EXECUTED"
+        },
+        {
+          "id": "VID-C16-G02",
+          "scenario": "Fallo o estado incierto evita duplicados y permite rollback.",
+          "status": "NOT_EXECUTED"
+        }
+      ],
+      "rollback": "Deshabilitar capacidad nueva, preservar datos/evidencias y conciliar efectos externos.",
+      "evidence_state": "NOT_VERIFIED_THIS_PREP"
+    },
+    {
+      "id": "VID-C17",
+      "sequence": 17,
+      "title": "Hardening y costes",
+      "objective": "Cerrar delta verificable de hardening y costes desde código y evidencias existentes sin reimplementar capacidades válidas.",
+      "status": "PLANNED_DELTA",
+      "depends_on": [
+        "VID-C16"
+      ],
+      "document": "docs/campaigns/17-hardening-y-costes.md",
+      "implementation_scaffold": "docs/implementation/17-hardening-y-costes/README.md",
+      "sources": [
+        "README.md",
+        "AGENTS.md",
+        "docs/architecture.md",
+        "docs/typescript-agents.md",
+        ".github/workflows/test.yml"
+      ],
+      "tasks": [
+        {
+          "id": "VID-C17-T01",
+          "action": "Congelar SHA y verificar código",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C17-T02",
+          "action": "Reconciliar evidencias históricas con HEAD",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C17-T03",
+          "action": "Especificar delta y superficies de escritura",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C17-T04",
+          "action": "Definir contratos y permisos con padre",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C17-T05",
+          "action": "Diseñar pruebas positivas y negativas",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C17-T06",
+          "action": "Recopilar evidencias y rollback",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C17-T07",
+          "action": "Gate Codex/arquitecto y founder",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        }
+      ],
+      "gate_scenarios": [
+        {
+          "id": "VID-C17-G01",
+          "scenario": "Tenant ajeno o permiso ausente bloquea acceso/efecto.",
+          "status": "NOT_EXECUTED"
+        },
+        {
+          "id": "VID-C17-G02",
+          "scenario": "Fallo o estado incierto evita duplicados y permite rollback.",
+          "status": "NOT_EXECUTED"
+        }
+      ],
+      "rollback": "Deshabilitar capacidad nueva, preservar datos/evidencias y conciliar efectos externos.",
+      "evidence_state": "NOT_VERIFIED_THIS_PREP"
+    },
+    {
+      "id": "VID-C18",
+      "sequence": 18,
+      "title": "Release y aprobación",
+      "objective": "Cerrar delta verificable de release y aprobación desde código y evidencias existentes sin reimplementar capacidades válidas.",
+      "status": "PLANNED_DELTA",
+      "depends_on": [
+        "VID-C17"
+      ],
+      "document": "docs/campaigns/18-release-y-aprobacion.md",
+      "implementation_scaffold": "docs/implementation/18-release-y-aprobacion/README.md",
+      "sources": [
+        "README.md",
+        "AGENTS.md",
+        "docs/architecture.md",
+        "docs/typescript-agents.md",
+        ".github/workflows/test.yml"
+      ],
+      "tasks": [
+        {
+          "id": "VID-C18-T01",
+          "action": "Congelar SHA y verificar código",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C18-T02",
+          "action": "Reconciliar evidencias históricas con HEAD",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C18-T03",
+          "action": "Especificar delta y superficies de escritura",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C18-T04",
+          "action": "Definir contratos y permisos con padre",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C18-T05",
+          "action": "Diseñar pruebas positivas y negativas",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C18-T06",
+          "action": "Recopilar evidencias y rollback",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "VID-C18-T07",
+          "action": "Gate Codex/arquitecto y founder",
+          "acceptance": "Evidencia reproducible SHA y entorno; BLOCKED si no se ejecuta.",
+          "status": "NOT_STARTED"
+        }
+      ],
+      "gate_scenarios": [
+        {
+          "id": "VID-C18-G01",
+          "scenario": "Tenant ajeno o permiso ausente bloquea acceso/efecto.",
+          "status": "NOT_EXECUTED"
+        },
+        {
+          "id": "VID-C18-G02",
+          "scenario": "Fallo o estado incierto evita duplicados y permite rollback.",
+          "status": "NOT_EXECUTED"
+        }
+      ],
+      "rollback": "Deshabilitar capacidad nueva, preservar datos/evidencias y conciliar efectos externos.",
+      "evidence_state": "NOT_VERIFIED_THIS_PREP"
+    }
+  ]
+}
