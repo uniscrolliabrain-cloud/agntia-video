@@ -28,6 +28,17 @@ No te detengas después de la auditoría, el índice, el roadmap ni las primeras
 ## 3. Política de evidencia
 Cada afirmación de estado debe anclarse a ruta, SHA, rama, test, PR o documento real. Distingue **OBSERVADO**, **DOCUMENTADO NO VERIFICADO**, **PROPUESTO**, **BLOQUEADO** y **DESCONOCIDO**. No inventes archivos, versiones, test results, worktrees, APIs ni funcionalidades. Si no puedes ver worktrees remotos o cambios no publicados, dilo. Las ramas no son sinónimo de código integrado. Un mock no es integración real. Documentación no equivale a implementación. Los tests declarados por otros agentes no son tests ejecutados por ti.
 
+
+## 1.1. CONCEPTO MÁSTER EXISTENTE EN DOCS — OBJETIVO DE CONSTRUCCIÓN (INSTRUCCIÓN PRIORITARIA)
+
+**Antes de definir arquitectura, roadmap o campañas, localiza y lee íntegramente el concepto máster de ESTE repositorio, que está documentado en una carpeta dentro de `docs/`.** Identifica la ruta real buscando los documentos de concepto máster, master concept, visión integral, auditoría maestra, especificaciones y sus referencias cruzadas. No inventes una ruta fija: descubre y cita la carpeta y los archivos efectivos, incluyendo rama y SHA. Si hay varias versiones, compara su vigencia y registra contradicciones; no ignores el concepto máster por estar distribuido entre documentos.
+
+**El concepto máster es la referencia principal del producto que queremos construir, no un mero antecedente documental.** Contrasta sus capacidades y objetivos con el código real de `main` y ramas, y crea una matriz exhaustiva `requisito del concepto máster -> estado real -> brecha -> campaña -> wave -> patchset -> archivos a crear/modificar -> pruebas -> evidencia`.
+
+**Diseña las campañas y sus patchsets para que Freebuff CONSTRUYA CÓDIGO REAL y acerque este repositorio todo lo técnicamente posible al concepto máster completo.** No te limites a preparar documentación, adaptadores mínimos o un MVP reducido. Desglosa todas las capacidades pendientes en implementaciones concretas y verificables, con wiring de extremo a extremo, persistencia, APIs, servicios, UI si aplica, seguridad, tests, observabilidad y recuperación. Prioriza la ejecución por dependencias y valor, pero conserva la visión completa y deja explícito qué quedará pendiente por razones reales.
+
+La tarea de ESTE GPT sigue siendo auditar y **escribir** las campañas en una rama documental; la tarea posterior de Freebuff será **ejecutar los patchsets y construir el repositorio**. No confundas ambas fases. No declares implementado nada que solo hayas planificado. Si el concepto máster contiene requisitos inviables, inseguros, contradictorios o dependientes de terceros, documenta la brecha, las alternativas y el bloqueo, sin fingir que se han resuelto.
+
 ---
 
 # PARTE II — CONTEXTO DE AGNTIAPRO
